@@ -2,7 +2,7 @@
 
 ## Participants
 
-- debarshibanerjee - Debarshi Banerjee
-- Sera91 - Serafina Di Gioia
-- AlexTru96  - Alexander Trujillo
+- debarshibanerjee - Debarshi Banerjee (OpenMP)
+- Sera91 - Serafina Di Gioia (refactoring)
+- AlexTru96  - Alexander Trujillo (MPI Wizard)
 
