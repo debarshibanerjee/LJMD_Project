@@ -10,6 +10,10 @@
 #include <string.h>
 #include <sys/time.h>
 
+#ifdef _OPENMP
+#	include <omp.h>
+#endif
+
 // I/O function
 static int get_a_line(FILE* fp, char* buf);
 static void output(mdsys_t* sys, FILE* erg, FILE* traj);

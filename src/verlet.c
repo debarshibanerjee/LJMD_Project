@@ -5,6 +5,9 @@ void verlet_vel_propagation(mdsys_t* sys) {
 	int i;
 
 	/* first part: propagate velocities by half and positions by full step */
+#ifdef _OPENMP
+#	pragma omp parallel for default(shared)
+#endif
 	for (i = 0; i < sys->natoms; ++i) {
 		sys->vx[i] += 0.5 * sys->dt / mvsq2e * sys->fx[i] / sys->mass;
 		sys->vy[i] += 0.5 * sys->dt / mvsq2e * sys->fy[i] / sys->mass;
@@ -18,6 +21,9 @@ void verlet_vel_propagation(mdsys_t* sys) {
 /* velocity verlet update step*/
 void verlet_vel_update(mdsys_t* sys) {
 	/* second part: propagate velocities by another half step */
+#ifdef _OPENMP
+#	pragma omp parallel for default(shared)
+#endif
 	for (i = 0; i < sys->natoms; ++i) {
 		sys->vx[i] += 0.5 * sys->dt / mvsq2e * sys->fx[i] / sys->mass;
 		sys->vy[i] += 0.5 * sys->dt / mvsq2e * sys->fy[i] / sys->mass;
