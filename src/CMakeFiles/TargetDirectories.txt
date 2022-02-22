@@ -1,8 +1,0 @@
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/CMakeFiles/edit_cache.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/CMakeFiles/rebuild_cache.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/tests/CMakeFiles/mdlib.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/tests/CMakeFiles/edit_cache.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/tests/CMakeFiles/rebuild_cache.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/src/CMakeFiles/ljmd-serial.x.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/src/CMakeFiles/edit_cache.dir
-/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src/src/CMakeFiles/rebuild_cache.dir
