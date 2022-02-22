@@ -9,6 +9,7 @@ if(ENABLE_TESTING)
   enable_testing()
   enable_language(CXX)
 
+  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
   include(GTest)
   add_executable(test_verlet test_verlet.cpp)
   target_include_directories(test_verlet PRIVATE ${CMAKE_SOURCE_DIR}/src)
