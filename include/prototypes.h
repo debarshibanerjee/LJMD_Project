@@ -10,7 +10,10 @@
 #include <string.h>
 #include <sys/time.h>
 
-<<<<<<< HEAD
+#ifdef _OPENMP
+#	include <omp.h>
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -39,10 +42,10 @@ extern void doublesleep(double t);
 #ifdef __cplusplus
 }
 #endif
-=======
+
 // I/O function
-static int get_a_line(FILE* fp, char* buf);
-static void output(mdsys_t* sys, FILE* erg, FILE* traj);
+int get_a_line(FILE* fp, char* buf);
+void output(mdsys_t* sys, FILE* erg, FILE* traj);
 
 // utilities
 double wallclock();
@@ -55,6 +58,5 @@ void ekin(mdsys_t* sys);
 void verlet_vel_propagation(mdsys_t* sys);
 void verlet_vel_update(mdsys_t* sys);
 static void velverlet(mdsys_t* sys);
->>>>>>> 41feee22558ca29c77c5d3768789fc2e45ad37bd
 
 #endif
