@@ -1,5 +1,6 @@
 #include "structures.h"
 #include "prototypes.h"
+#include "variables.h"
 
 
 
@@ -19,8 +20,6 @@ void verlet_vel_propagation(mdsys_t *sys) {
     }
 
 }
-
-
 
 void verlet_vel_update(mdsys_t *sys) {
 
@@ -46,5 +45,29 @@ static void velverlet(mdsys_t *sys) {
 
     verlet_vel_update(sys);
 }
+
+void verlet_1(mdsys_t *sys)
+{
+    int i;
+
+    /* first part: propagate velocities by half and positions by full step */
+    for (i=0; i<sys->natoms; ++i) {
+        sys->vx[i] += 0.5 * sys->fx[i] / sys->mass;
+        sys->rx[i] += sys->vx[i];
+    }
+}
+
+
+void verlet_2(mdsys_t *sys)
+{
+    int i;
+
+    /* second part: propagate velocities by another half step */
+    for (i=0; i<sys->natoms; ++i) {
+        sys->vx[i] += 0.5 * sys->fx[i] / sys->mass;
+    }
+}
+
+
 
 

@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/ljmd-serial.x.dir/main.c.o -o ljmd-serial.x   -L/home/serafina/Documenti/Local_LJMD_Project/LJMD_Project/src 
