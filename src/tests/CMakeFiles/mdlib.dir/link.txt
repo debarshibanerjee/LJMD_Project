@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmdlib.a CMakeFiles/mdlib.dir/__/utilities.c.o CMakeFiles/mdlib.dir/__/verlet.c.o
-/usr/bin/ranlib libmdlib.a
