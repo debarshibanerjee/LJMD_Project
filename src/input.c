@@ -1,4 +1,13 @@
+<<<<<<< HEAD
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include "structures.h"
+=======
+>>>>>>> 41feee22558ca29c77c5d3768789fc2e45ad37bd
 #include "prototypes.h"
+#include "variables.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */

@@ -1,4 +1,5 @@
 #include "prototypes.h"
+#include "variables.h"
 
 /* velocity verlet propagation step*/
 void verlet_vel_propagation(mdsys_t* sys) {
@@ -18,6 +19,19 @@ void verlet_vel_propagation(mdsys_t* sys) {
 	}
 }
 
+<<<<<<< HEAD
+void verlet_vel_update(mdsys_t *sys) {
+
+    /* compute forces and potential energy */
+    force(sys);
+
+    /* second part: propagate velocities by another half step */
+    for (i=0; i<sys->natoms; ++i) {
+        sys->vx[i] += 0.5*sys->dt / mvsq2e * sys->fx[i] / sys->mass;
+        sys->vy[i] += 0.5*sys->dt / mvsq2e * sys->fy[i] / sys->mass;
+        sys->vz[i] += 0.5*sys->dt / mvsq2e * sys->fz[i] / sys->mass;
+    }
+=======
 /* velocity verlet update step*/
 void verlet_vel_update(mdsys_t* sys) {
 	/* second part: propagate velocities by another half step */
@@ -29,6 +43,7 @@ void verlet_vel_update(mdsys_t* sys) {
 		sys->vy[i] += 0.5 * sys->dt / mvsq2e * sys->fy[i] / sys->mass;
 		sys->vz[i] += 0.5 * sys->dt / mvsq2e * sys->fz[i] / sys->mass;
 	}
+>>>>>>> 41feee22558ca29c77c5d3768789fc2e45ad37bd
 }
 
 static void velverlet(mdsys_t* sys) {
@@ -41,3 +56,32 @@ static void velverlet(mdsys_t* sys) {
 	/* update the velocities */
 	verlet_vel_update(sys);
 }
+<<<<<<< HEAD
+
+void verlet_1(mdsys_t *sys)
+{
+    int i;
+
+    /* first part: propagate velocities by half and positions by full step */
+    for (i=0; i<sys->natoms; ++i) {
+        sys->vx[i] += 0.5 * sys->fx[i] / sys->mass;
+        sys->rx[i] += sys->vx[i];
+    }
+}
+
+
+void verlet_2(mdsys_t *sys)
+{
+    int i;
+
+    /* second part: propagate velocities by another half step */
+    for (i=0; i<sys->natoms; ++i) {
+        sys->vx[i] += 0.5 * sys->fx[i] / sys->mass;
+    }
+}
+
+
+
+
+=======
+>>>>>>> 41feee22558ca29c77c5d3768789fc2e45ad37bd
