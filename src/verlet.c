@@ -1,8 +1,5 @@
 #include "prototypes.h"
-#include "variables.h"
 
-const double kboltz = 0.0019872067;             /* boltzman constant in kcal/mol/K */
-const double mvsq2e = 2390.05736153349; /* m*v^2 in kcal/mol */
 /* velocity verlet propagation step*/
 void verlet_vel_propagation(mdsys_t* sys) {
 
@@ -68,7 +65,4 @@ void verlet_2(mdsys_t *sys)
         sys->vx[i] += 0.5 * sys->fx[i] / sys->mass;
     }
 }
-
-
-
 
