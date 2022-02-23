@@ -2,7 +2,7 @@
 
 /* compute forces */
 void force(mdsys_t* sys) {
-	double rsq, ffac;
+	double r, ffac;
 	double rx, ry, rz;
 	int i, j;
 
@@ -29,7 +29,7 @@ void force(mdsys_t* sys) {
 			rx = pbc(sys->rx[i] - sys->rx[j], 0.5 * sys->box);
 			ry = pbc(sys->ry[i] - sys->ry[j], 0.5 * sys->box);
 			rz = pbc(sys->rz[i] - sys->rz[j], 0.5 * sys->box);
-			rsq = (rx * rx + ry * ry + rz * rz);
+			r = sqrt(rx * rx + ry * ry + rz * rz);
 
 			/* compute force and energy if within cutoff */
 			if (r < sys->rcut) {
