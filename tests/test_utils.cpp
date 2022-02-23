@@ -1,6 +1,5 @@
-
 #include "gtest/gtest.h"
-#include "ljmd.h"
+#include "utilities.h"
 
 
 TEST(TestWallClock, one)

@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 #include "utilities.h"
-#include "prototypes.h"
 #include <sys/time.h>
 #include <time.h>
 
@@ -23,16 +21,8 @@ void doublesleep(double t)
 }
 
 
-=======
-#include "prototypes.h"
 
-/* helper function: calculate time */
-double wallclock() {
-	struct timeval t;
-	gettimeofday(&t, 0);
-	return ((double)t.tv_sec) + 1.0e-6 * ((double)t.tv_usec);
-}
->>>>>>> 41feee22558ca29c77c5d3768789fc2e45ad37bd
+
 
 /* helper function: zero out an array */
 void azzero(double* d, const int n) {
