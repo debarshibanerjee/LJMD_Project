@@ -35,7 +35,7 @@ void verlet_vel_update(mdsys_t* sys) {
 	}
 }
 
-void velverlet(mdsys_t* sys) {
+static void velverlet(mdsys_t* sys) {
 	/* initial velocity propagation */
 	verlet_vel_propagation(sys);
 
