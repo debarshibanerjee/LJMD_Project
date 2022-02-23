@@ -2,7 +2,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-
 double wallclock()
 {
     struct timeval t; //struct defined in time.h

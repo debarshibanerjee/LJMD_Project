@@ -1,5 +1,4 @@
 #include "prototypes.h"
-#include "variables.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */
