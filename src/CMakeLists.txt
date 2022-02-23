@@ -4,15 +4,10 @@ project(ljmd VERSION 1.0 LANGUAGES C)
 
 add_compile_definitions(LJMD_VERSION=1.0)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+add_library(testlib ${CMAKE_SOURCE_DIR}/src/utilities.c ${CMAKE_SOURCE_DIR}/src/verlet.c ${CMAKE_SOURCE_DIR}/src/input.c ${CMAKE_SOURCE_DIR}/src/output.c ${CMAKE_SOURCE_DIR}/src/force.c ${CMAKE_SOURCE_DIR}/src/energy.c)
 
-=======
 add_library(testlib ${CMAKE_SOURCE_DIR}/src/utilities.c ${CMAKE_SOURCE_DIR}/src/verlet.c ${CMAKE_SOURCE_DIR}/src/input.c ${CMAKE_SOURCE_DIR}/src/output.c ${CMAKE_SOURCE_DIR}/src/force.c ${CMAKE_SOURCE_DIR}/src/energy.c)
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
-=======
-add_library(testlib ${CMAKE_SOURCE_DIR}/src/utilities.c ${CMAKE_SOURCE_DIR}/src/verlet.c ${CMAKE_SOURCE_DIR}/src/input.c ${CMAKE_SOURCE_DIR}/src/output.c ${CMAKE_SOURCE_DIR}/src/force.c ${CMAKE_SOURCE_DIR}/src/energy.c)
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/src)
 add_executable(ljmd-serial  ${CMAKE_SOURCE_DIR}/src/main.c)
