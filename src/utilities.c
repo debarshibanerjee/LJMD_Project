@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 #include "utilities.h"
-=======
-=======
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
-#include "prototypes.h"
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 #include <sys/time.h>
 #include <time.h>
 
@@ -27,15 +20,6 @@ void doublesleep(double t)
 }
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
-=======
->>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 /* helper function: zero out an array */
 void azzero(double* d, const int n) {
 	int i;
