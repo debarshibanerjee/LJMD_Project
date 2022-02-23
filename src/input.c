@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "variables.h"
 #include "structures.h"
+=======
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 =======
 >>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 #include "prototypes.h"

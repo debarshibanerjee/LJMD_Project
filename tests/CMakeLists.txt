@@ -12,12 +12,21 @@ if(ENABLE_TESTING)
   add_executable(test_verlet test_verlet.cpp)
   target_include_directories(test_verlet PRIVATE ${CMAKE_SOURCE_DIR}/include)
 <<<<<<< HEAD
+<<<<<<< HEAD
   target_link_libraries(test_verlet PRIVATE GTest::GTestMain GTest::GTest mdlib)
   add_test(NAME Verlet COMMAND test_verlet)
 
   add_executable(test_utils test_utils.cpp)
   target_include_directories(test_utils PRIVATE ${CMAKE_SOURCE_DIR}/include)
   target_link_libraries(test_utils PRIVATE GTest::GTestMain GTest::GTest mdlib)
+=======
+  target_link_libraries(test_verlet PRIVATE GTest::GTestMain GTest::GTest testlib)
+  add_test(NAME Verlet COMMAND test_verlet)
+
+  add_executable(test_utils test_utils.cpp)  
+  target_include_directories(test_utils PRIVATE ${CMAKE_SOURCE_DIR}/include)
+  target_link_libraries(test_utils PRIVATE GTest::GTestMain GTest::GTest testlib)
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 =======
   target_link_libraries(test_verlet PRIVATE GTest::GTestMain GTest::GTest testlib)
   add_test(NAME Verlet COMMAND test_verlet)
