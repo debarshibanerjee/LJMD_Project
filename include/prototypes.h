@@ -10,7 +10,13 @@
 #include <string.h>
 #include <sys/time.h>
 
+<<<<<<< HEAD
 
+=======
+#ifdef _OPENMP
+#	include <omp.h>
+#endif
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 
 #ifdef __cplusplus
 extern "C"
@@ -18,9 +24,10 @@ extern "C"
 #endif
 
 //I/O function
-int get_a_line(FILE *fp, char *buf);
-void output(mdsys_t *sys, FILE *erg, FILE *traj);
+extern int get_a_line(FILE *fp, char *buf);
+extern void output(mdsys_t *sys, FILE *erg, FILE *traj);
 
+<<<<<<< HEAD
 
 
 //physical functions
@@ -33,6 +40,23 @@ static void velverlet(mdsys_t *sys);
 extern void verlet_1(mdsys_t *sys);
 extern void verlet_2(mdsys_t *sys);
 
+=======
+//utilities
+extern double wallclock();
+extern void azzero(double *d, const int n);
+extern double pbc(double x, const double boxby2);
+
+//physical functions
+
+extern void force(mdsys_t *sys);
+extern void ekin(mdsys_t *sys);
+extern void verlet_vel_update(mdsys_t *sys);
+extern void verlet_vel_propagation(mdsys_t *sys);
+extern void verlet_1(mdsys_t *sys);
+extern void verlet_2(mdsys_t *sys);
+extern void velverlet(mdsys_t *sys);
+extern void doublesleep(double t);
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 
 #ifdef __cplusplus
 }

@@ -12,6 +12,13 @@ void force(mdsys_t* sys) {
 	azzero(sys->fy, sys->natoms);
 	azzero(sys->fz, sys->natoms);
 
+	double c12 = 4.0 * sys->epsilon * pow(sys->sigma, 12.0);
+	double c6 = 4.0 * sys->epsilon * pow(sys->sigma, 6.0);
+	double rcsq = sys->rcut * sys->rcut;
+
+#ifdef _OPENMP
+#pragma omp parallel for default(shared) private(i, j, rx, ry, rz, ffac, r1x, r1y, r1z, f1x, f1y, f1z, rsq, rinv, r6) reduction(+:epot)
+#endif
 	for (i = 0; i < (sys->natoms); ++i) {
 		for (j = 0; j < (sys->natoms); ++j) {
 			/* particles have no interactions with themselves */

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "utilities.h"
+=======
+#include "prototypes.h"
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 #include <sys/time.h>
 #include <time.h>
 
@@ -11,7 +15,6 @@ double wallclock()
 }
 
 /* helper function: sleep for some time */
-
 void doublesleep(double t)
 {
     struct timespec ts;
@@ -21,9 +24,12 @@ void doublesleep(double t)
 }
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 /* helper function: zero out an array */
 void azzero(double* d, const int n) {
 	int i;
@@ -31,8 +37,6 @@ void azzero(double* d, const int n) {
 		d[i] = 0.0;
 	}
 }
-
-
 
 /* helper function: apply minimum image convention */
 double pbc(double x, const double boxby2) {

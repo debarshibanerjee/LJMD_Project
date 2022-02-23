@@ -1,10 +1,13 @@
+<<<<<<< HEAD
 #include "variables.h"
 #include "structures.h"
+=======
+>>>>>>> 6aca630b002cca78d5634cadbcd83271fba000e5
 #include "prototypes.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */
-static int get_a_line(FILE* fp, char* buf) {
+int get_a_line(FILE* fp, char* buf) {
 	char tmp[BLEN], *ptr;
 
 	/* read a line and cut of comments and blanks */
