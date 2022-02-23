@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include "prototypes.h"
+#include "utilities.h"
+
 
 
 TEST(TestWallClock, one)

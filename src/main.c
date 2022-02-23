@@ -4,8 +4,9 @@
  *
  * baseline c version.
  */
-
+#include "utilities.h"
 #include "prototypes.h"
+
 
 /* main */
 int main(int argc, char** argv) {

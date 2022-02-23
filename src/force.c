@@ -1,3 +1,4 @@
+#include "utilities.h"
 #include "prototypes.h"
 
 /* compute forces */

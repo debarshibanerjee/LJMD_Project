@@ -1,5 +1,6 @@
-#include "prototypes.h"
 #include "variables.h"
+#include "structures.h"
+#include "prototypes.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */
