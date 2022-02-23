@@ -31,7 +31,7 @@ void force(mdsys_t *sys);
 void ekin(mdsys_t *sys);
 void verlet_vel_update(mdsys_t *sys);
 void verlet_vel_propagation(mdsys_t *sys);
-static void velverlet(mdsys_t *sys);
+void velverlet(mdsys_t *sys);
 extern void verlet_1(mdsys_t *sys);
 extern void verlet_2(mdsys_t *sys);
 
