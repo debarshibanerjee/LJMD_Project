@@ -28,6 +28,8 @@ extern void output(mdsys_t *sys, FILE *erg, FILE *traj);
 //physical functions
 
 extern void force(mdsys_t *sys);
+extern void force_optimized_with3LawN(mdsys_t *sys);
+extern void force_optimized_with3LawN_more_opt(mdsys_t *sys);
 extern void ekin(mdsys_t *sys);
 extern void verlet_vel_update(mdsys_t *sys);
 extern void verlet_vel_propagation(mdsys_t *sys);
