@@ -7,7 +7,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  openmpi:
+  InstallMPI_CmakeCompilation :
     runs-on: ubuntu-latest
     env:
       TOKEN: ${{ secrets.TOKEN }}
@@ -22,19 +22,18 @@ jobs:
       run: |
         make -j
         sudo make install
-    - name: set-openmpi-path
-      run: |
-        export PATH=${PATH}:/home/${USER}/.openmpi/bin/
-        export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/${USER}/.openmpi/lib/
-        echo ${PATH}
-        echo ${LD_LIBRARY_PATH}
-
+        
+    - uses: actions/checkout@v2
     - name: Configure with CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
-      run: cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
-
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: |
+        export MPI_HOME=/home/${USER}/.openmpi
+        cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
+        
     - name: Download googletest and Build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
