@@ -17,7 +17,7 @@ extern "C"
 //utilities
 extern double wallclock();
 extern void azzero(double *d, const int n);
-double pbc(double x, const double boxby2);
+extern double pbc(double x, const double boxby2);
 extern void doublesleep(double t);
 
 
