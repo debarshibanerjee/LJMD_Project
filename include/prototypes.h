@@ -3,6 +3,8 @@
 
 #include "structures.h"
 #include "variables.h"
+
+#include <mpi.h>
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>

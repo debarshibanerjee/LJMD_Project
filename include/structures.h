@@ -4,12 +4,13 @@
 /* structure to hold the complete information
  * about the MD system */
 struct _mdsys {
-	int natoms, nfi, nsteps;
+	int natoms, nfi, nsteps, nsize, mpirank;
 	double dt, mass, epsilon, sigma, box, rcut;
 	double ekin, epot, temp;
 	double *rx, *ry, *rz;
 	double *vx, *vy, *vz;
 	double *fx, *fy, *fz;
+	double *cx, *cy, *cz;
 };
 typedef struct _mdsys mdsys_t;
 

@@ -11,6 +11,12 @@
 
 /* main */
 int main(int argc, char** argv) {
+
+	MPI_Init(&argc, &argv);
+	int rank,size;
+	MPI_Comm_rank(MPI_COMM_WORLD,&rank);  
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+
 	int nprint, i;
 	char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
 	FILE *fp, *traj, *erg;
@@ -18,6 +24,7 @@ int main(int argc, char** argv) {
 	double t_start;
 
 	printf("LJMD version %3.1f\n", LJMD_VERSION);
+
 
 	t_start = wallclock();
 
@@ -129,5 +136,6 @@ int main(int argc, char** argv) {
 	free(sys.fy);
 	free(sys.fz);
 
+	MPI_Finalize();
 	return 0;
 }
