@@ -75,11 +75,10 @@ void force_optimized_with3LawN(mdsys_t *sys) {
 
             /* compute force and energy if within cutoff */
             if (r < sys->rcut) {
-                ffac = -4.0*sys->epsilon*(-12.0*pow(sys->sigma/r,12.0)/r
-                                         +6*pow(sys->sigma/r,6.0)/r);
 
-                sys->epot += 0.5*4.0*sys->epsilon*(pow(sys->sigma/r,12.0)
-                                               -pow(sys->sigma/r,6.0));
+                ffac = -4.0*sys->epsilon*(-12.0*pow(sys->sigma/r,12.0)/r+ 6*pow(sys->sigma/r,6.0)/r);
+
+                sys->epot += 0.5*4.0*sys->epsilon*(pow(sys->sigma/r,12.0) -pow(sys->sigma/r,6.0));
 
                 sys->fx[i] += rx/r*ffac;
                 sys->fx[j] -= rx/r*ffac;
@@ -108,7 +107,7 @@ void force_optimized_with3LawN_more_opt(mdsys_t *sys)
     azzero(sys->fz,sys->natoms);
 
     double c12, c6, rcsq, s6;
-    s6 = sys->sigma * sys->sigma * sys->sigma * sys->sigma * sys->sigma * sys->sigma;
+    s6 = sys->sigma*sys->sigma*sys->sigma*sys->sigma*sys->sigma*sys->sigma;
     c12=4.0*sys->epsilon*s6*s6;
     c6 =4.0*sys->epsilon*s6;
     rcsq = sys->rcut * sys->rcut;
@@ -127,7 +126,7 @@ void force_optimized_with3LawN_more_opt(mdsys_t *sys)
             /* compute force and energy if within cutoff */
             if (r < sys->rcut) {
                 double r6,rinv; 
-                rinv=1.0/rsq; 
+                rinv=1.0/(r*r); 
                 r6=rinv*rinv*rinv;
                 ffac = (12.0*c12*r6 - 6.0*c6)*r6;
                 sys->epot  += r6*(c12*r6 - c6);
