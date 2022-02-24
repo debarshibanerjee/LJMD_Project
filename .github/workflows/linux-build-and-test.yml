@@ -28,14 +28,6 @@ jobs:
         export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/${USER}/.openmpi/lib/
         echo ${PATH}
         echo ${LD_LIBRARY_PATH}
-      
-  build:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
 
     - name: Configure with CMake
       # Use a bash shell so we can use the same syntax for environment variable
