@@ -12,6 +12,9 @@ void force(mdsys_t* sys) {
 	azzero(sys->fx, sys->natoms);
 	azzero(sys->fy, sys->natoms);
 	azzero(sys->fz, sys->natoms);
+	azzero(sys->cx, sys->natoms);
+       	azzero(sys->cy, sys->natoms); 
+	azzero(sys->cz, sys->natoms);
 
 	double c12 = 4.0 * sys->epsilon * pow(sys->sigma, 12.0);
 	double c6 = 4.0 * sys->epsilon * pow(sys->sigma, 6.0);

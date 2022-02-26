@@ -27,6 +27,9 @@ int main(int argc, char** argv) {
 
 
 	t_start = wallclock();
+	/*set MPI parameters*/
+	sys.mpirank = rank;
+	sys.nsize = size;
 
 	/* read input file */
 	if (get_a_line(stdin, line))
