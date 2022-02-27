@@ -14,7 +14,7 @@ if(ENABLE_TESTING)
   add_executable(test_verlet test_verlet.cpp)
   target_include_directories(test_verlet PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   target_link_libraries(test_verlet PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  add_test(NAME Verlet COMMAND mpirun -np 1 test_verlet)
+  add_test(NAME Verlet COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_verlet)
 
   add_executable(test_utils test_utils.cpp)  
   target_include_directories(test_utils PRIVATE ${CMAKE_SOURCE_DIR}/include)
@@ -24,7 +24,7 @@ if(ENABLE_TESTING)
   add_executable(test_energy test_energy.cpp)  
   target_include_directories(test_energy PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   target_link_libraries(test_energy PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  add_test(NAME Energy COMMAND mpirun -np 1 test_energy)
+  add_test(NAME Energy COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_energy)
 
 endif()
 
