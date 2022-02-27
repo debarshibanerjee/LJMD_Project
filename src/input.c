@@ -1,3 +1,5 @@
+#include "variables.h"
+#include "structures.h"
 #include "prototypes.h"
 
 /* helper function: read a line and then return

@@ -1,3 +1,4 @@
+#include "variables.h"
 #include "prototypes.h"
 
 /* compute kinetic energy */

@@ -7,27 +7,40 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.
+  InstallMPI_CmakeCompilation :
     runs-on: ubuntu-latest
-
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
     steps:
+    - name: download-openmpi
+      run: wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz
+    - name: extract-openmpi
+      run: tar -xvf ./openmpi-4.0.2.tar.gz
+    - name: configure-openmpi
+      run: ./openmpi-4.0.2/configure --prefix="/home/${USER}/.openmpi"
+    - name: install-openmpi
+      run: |
+        make -j
+        sudo make install
+        
     - uses: actions/checkout@v2
-
     - name: Configure with CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
-      run: cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
-
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: |
+        export MPI_HOME=/home/${USER}/.openmpi
+        cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
+        
     - name: Download googletest and Build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build $GITHUB_WORKSPACE/build --config $BUILD_TYPE
 
     - name: Run Tests
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/build/tests
       shell: bash
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail

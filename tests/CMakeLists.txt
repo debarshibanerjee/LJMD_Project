@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(GTESTDEMO VERSION 1.0 LANGUAGES C)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-
+find_package(MPI)
+include_directories(SYSTEM ${MPI_INCLUDE_PATH})
+add_definitions(-DOMPI_SKIP_MPICXX)
 option(ENABLE_TESTING "Enable building unit tests" OFF)
 if(ENABLE_TESTING)
   enable_testing()
@@ -21,7 +23,10 @@ if(ENABLE_TESTING)
 
   add_executable(test_energy test_energy.cpp)  
   target_include_directories(test_energy PRIVATE ${CMAKE_SOURCE_DIR}/include)
-  target_link_libraries(test_energy PRIVATE GTest::GTestMain GTest::GTest testlib)
+  target_link_libraries(test_energy PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME Energy COMMAND test_energy)
 
 endif()
+
+
+  
