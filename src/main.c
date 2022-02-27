@@ -97,7 +97,7 @@ if(sys.mpirank==0){
 	sys.cz = (double*)malloc(sys.natoms * sizeof(double));
 	/* read restart */
 
-	if(sys.mpirank ==0){
+if(sys.mpirank ==0){
 
 	fp = fopen(restfile, "r");
 	if (fp) {
@@ -164,6 +164,9 @@ if(sys.mpirank==0){
 	free(sys.fx);
 	free(sys.fy);
 	free(sys.fz);
+	free(sys.cx);
+	free(sys.cy);
+	free(sys.cz);
 
 	MPI_Finalize();
 	return 0;
