@@ -41,10 +41,10 @@ if(ENABLE_TESTING)
   target_link_libraries(test_pbc PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME pbc COMMAND test_pbc)
   
-  add_executable(test_force test_force.cpp)  
-  target_include_directories(test_force PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
-  target_link_libraries(test_force PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  add_test(NAME Force COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force)
+  # add_executable(test_force test_force.cpp)  
+  # target_include_directories(test_force PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  # target_link_libraries(test_force PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  # add_test(NAME Force COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force)
 endif()
 
 
