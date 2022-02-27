@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 	sys.mpicomm = MPI_COMM_WORLD;
 
 
-	if(sys.mpirank==0){
+if(sys.mpirank==0){
 	printf("LJMD version %3.1f\n", LJMD_VERSION);
 
 
@@ -70,7 +70,17 @@ int main(int argc, char** argv) {
 	if (get_a_line(stdin, line))
 		return 1;
 	nprint = atoi(line);
-	}
+}
+	/*Sending data to all MPI processors*/
+	MPI_Bcast(&(sys.natoms), 1, MPI_INT, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.nsteps), 1, MPI_INT, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.mass), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.epsilon), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.sigma), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.box), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.rcut), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.dt), 1, MPI_DOUBLE, 0, sys.mpicomm);
+
 	/* allocate memory */
 	sys.rx = (double*)malloc(sys.natoms * sizeof(double));
 	sys.ry = (double*)malloc(sys.natoms * sizeof(double));
@@ -87,7 +97,7 @@ int main(int argc, char** argv) {
 	sys.cz = (double*)malloc(sys.natoms * sizeof(double));
 	/* read restart */
 
-	if(sys.mpirank ==0){
+if(sys.mpirank ==0){
 
 	fp = fopen(restfile, "r");
 	if (fp) {
@@ -154,6 +164,9 @@ if(sys.mpirank==0){
 	free(sys.fx);
 	free(sys.fy);
 	free(sys.fz);
+	free(sys.cx);
+	free(sys.cy);
+	free(sys.cz);
 
 	MPI_Finalize();
 	return 0;
