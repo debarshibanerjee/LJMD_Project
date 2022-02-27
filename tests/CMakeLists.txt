@@ -56,10 +56,15 @@ if(ENABLE_TESTING)
   target_link_libraries(test_mpi PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME mpi COMMAND ${MPIEXEC_EXECUTABLE} --oversubscribe -np 4 test_mpi)
   
-  # add_executable(test_force test_force.cpp)  
-  # target_include_directories(test_force PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
-  # target_link_libraries(test_force PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  # add_test(NAME Force COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force)
+  add_executable(test_force_3LawN test_force_3LawN.cpp)  
+  target_include_directories(test_force_3LawN PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  target_link_libraries(test_force_3LawN PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  add_test(NAME Force_3LawN_1st_version COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force_3LawN)
+  
+  add_executable(test_force_3LawN_more_opt test_force_3LawN_more_opt.cpp)  
+  target_include_directories(test_force_3LawN_more_opt PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  target_link_libraries(test_force_3LawN_more_opt PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  add_test(NAME Force_3LawN_more_opt_2nd_version COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force_3LawN_more_opt)
 endif()
 
 
