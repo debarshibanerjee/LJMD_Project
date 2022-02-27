@@ -30,6 +30,11 @@ if(ENABLE_TESTING)
   target_include_directories(test_ekin PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   target_link_libraries(test_ekin PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME Ekin COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_ekin)
+  
+  add_executable(test_verlet_integration_detailed test_verlet_integration_detailed.cpp)  
+  target_include_directories(test_verlet_integration_detailed PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  target_link_libraries(test_verlet_integration_detailed PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  add_test(NAME Detailed_Verlet_Integration_Test COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_verlet_integration_detailed)
 endif()
 
 
