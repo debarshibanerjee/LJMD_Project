@@ -1,9 +1,10 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
-
+#include <mpi.h>
 /* structure to hold the complete information
  * about the MD system */
 struct _mdsys {
+	MPI_Comm mpicomm;
 	int natoms, nfi, nsteps, nsize, mpirank;
 	double dt, mass, epsilon, sigma, box, rcut;
 	double ekin, epot, temp;
