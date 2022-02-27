@@ -15,9 +15,9 @@ void force(mdsys_t* sys) {
        	azzero(sys->cy, sys->natoms); 
 	azzero(sys->cz, sys->natoms);
 
-//	MPI_Bcast(sys->rx, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
-//	MPI_Bcast(sys->ry, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
-//	MPI_Bcast(sys->rz, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
+	MPI_Bcast(sys->rx, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
+	MPI_Bcast(sys->ry, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
+	MPI_Bcast(sys->rz, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
 
 	double c12 = 4.0 * sys->epsilon * pow(sys->sigma, 12.0);
 	double c6 = 4.0 * sys->epsilon * pow(sys->sigma, 6.0);
