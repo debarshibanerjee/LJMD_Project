@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Cleaning old files..."
-rm ljmd.x
+rm -f ljmd.x
 rm -rf build/
 
 echo "Preparing to compile with CMake..."
