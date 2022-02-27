@@ -5,14 +5,16 @@
 class ForceTest : public ::testing::TestWithParam<double> {
    protected:
 	mdsys_t* sys;
-	int eps_param = GetParam();
+	int eps = GetParam();
 
 	void SetUp() {
 		sys = new mdsys_t;
 		sys->natoms = 2;
-		sys->epsilon = eps_param;
+		sys->epsilon = eps;
 		sys->sigma = 1.0;
 		sys->box = 10.0;
+
+		sys->mpicomm = MPI_COMM_WORLD;
 
 		sys->rx = new double[2]();
 		sys->ry = new double[2]();
@@ -21,6 +23,10 @@ class ForceTest : public ::testing::TestWithParam<double> {
 		sys->fx = new double[2];
 		sys->fy = new double[2];
 		sys->fz = new double[2];
+
+		sys->cx = new double[2];
+		sys->cy = new double[2];
+		sys->cz = new double[2];
 
 		sys->rx[0] = -1.0;
 		sys->rx[1] = 1.0;
@@ -35,38 +41,15 @@ class ForceTest : public ::testing::TestWithParam<double> {
 		delete[] sys->fy;
 		delete[] sys->fz;
 
+		delete[] sys->cx;
+		delete[] sys->cy;
+		delete[] sys->cz;
+
 		delete sys;
 	}
 };
 
-TEST(ForceTestSingle, single_atom) {
-	mdsys_t* sys = new mdsys_t;
-	sys->natoms = 1;
-
-	sys->rx = new double[1];
-	sys->ry = new double[1];
-	sys->rz = new double[1];
-
-	sys->fx = new double[1];
-	sys->fy = new double[1];
-	sys->fz = new double[1];
-
-	/* force(sys); */
-	force_optimized_with3LawN(sys);
-
-	ASSERT_EQ(sys->fx[0], 0.0);
-	ASSERT_EQ(sys->fy[0], 0.0);
-	ASSERT_EQ(sys->fz[0], 0.0);
-	ASSERT_DOUBLE_EQ(sys->epot, 0.0);
-
-	delete[] sys->fx;
-	delete[] sys->fy;
-	delete[] sys->fz;
-
-	delete sys;
-}
-
-TEST_P(ForceTest, test_3LawN) {
+TEST_P(ForceTest, test1) {
 	ASSERT_NE(sys, nullptr);
 	ASSERT_DOUBLE_EQ(sys->natoms, 2);
 	ASSERT_DOUBLE_EQ(sys->rx[0], -1.0);
@@ -78,8 +61,8 @@ TEST_P(ForceTest, test_3LawN) {
 
 	sys->rcut = 0.5;
 
-	/* force(sys); */
-	force_optimized_with3LawN(sys);
+	force(sys);
+
 	EXPECT_DOUBLE_EQ(sys->fx[0], 0.0);
 	EXPECT_DOUBLE_EQ(sys->fx[1], 0.0);
 	EXPECT_DOUBLE_EQ(sys->fy[0], 0.0);
