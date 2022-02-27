@@ -22,11 +22,19 @@ int main(int argc, char** argv) {
 	mdsys_t sys;
 	double t_start;
 
+	t_start = wallclock();
+
+	/*set MPI parameters*/
+	sys.mpirank = rank;
+	sys.nsize = size;
+	sys.mpicomm = MPI_COMM_WORLD;
+
+
+	if(sys.mpirank==0){
 	printf("LJMD version %3.1f\n", LJMD_VERSION);
 
 
-	t_start = wallclock();
-
+	
 	/* read input file */
 	if (get_a_line(stdin, line))
 		return 1;
@@ -61,7 +69,7 @@ int main(int argc, char** argv) {
 	if (get_a_line(stdin, line))
 		return 1;
 	nprint = atoi(line);
-
+	}
 	/* allocate memory */
 	sys.rx = (double*)malloc(sys.natoms * sizeof(double));
 	sys.ry = (double*)malloc(sys.natoms * sizeof(double));
@@ -73,7 +81,13 @@ int main(int argc, char** argv) {
 	sys.fy = (double*)malloc(sys.natoms * sizeof(double));
 	sys.fz = (double*)malloc(sys.natoms * sizeof(double));
 
+	sys.cx = (double*)malloc(sys.natoms * sizeof(double));
+	sys.cy = (double*)malloc(sys.natoms * sizeof(double));
+	sys.cz = (double*)malloc(sys.natoms * sizeof(double));
 	/* read restart */
+
+	if(sys.mpirank ==0){
+
 	fp = fopen(restfile, "r");
 	if (fp) {
 		for (i = 0; i < sys.natoms; ++i) {
@@ -90,12 +104,13 @@ int main(int argc, char** argv) {
 		perror("cannot read restart file");
 		return 3;
 	}
-
+}
 	/* initialize forces and energies.*/
 	sys.nfi = 0;
 	force(&sys);
 	ekin(&sys);
 
+if(sys.mpirank==0){
 	erg = fopen(ergfile, "w");
 	traj = fopen(trajfile, "w");
 
@@ -103,6 +118,7 @@ int main(int argc, char** argv) {
 	printf("Starting simulation with %d atoms for %d steps.\n", sys.natoms, sys.nsteps);
 	printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
 	output(&sys, erg, traj);
+}
 
 	/* reset timer */
 	t_start = wallclock();
@@ -111,8 +127,10 @@ int main(int argc, char** argv) {
 	/* main MD loop */
 	for (sys.nfi = 1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 		/* write output, if requested */
+	if(sys.mpirank==0){
 		if ((sys.nfi % nprint) == 0)
 			output(&sys, erg, traj);
+	}
 
 		/* propagate system and recompute energies */
 		velverlet(&sys);
@@ -121,10 +139,11 @@ int main(int argc, char** argv) {
 	/**************************************************/
 
 	/* clean up: close files, free memory */
+if(sys.mpirank==0){
 	printf("Simulation Done. Run time: %10.3fs\n", wallclock() - t_start);
 	fclose(erg);
 	fclose(traj);
-
+}
 	free(sys.rx);
 	free(sys.ry);
 	free(sys.rz);
