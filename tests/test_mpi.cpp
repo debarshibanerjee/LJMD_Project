@@ -58,6 +58,23 @@ TEST_F(MPITest, size_rank) {
 	}
 }
 
+TEST_F(MPITest, broadcast_check) {
+	int me = MPITestEnv::get_mpi_rank();
+	int root = 0;
+	int buffer;
+	if (me == 0) {
+		buffer = 3;
+	}
+	MPI_Bcast(&buffer, 1, MPI_INT, root, MPI_COMM_WORLD);
+	ASSERT_EQ(3, buffer);
+	if (me == 0) {
+		std::cout << "Original Buffer on root (rank=0) is " << 3 << std::endl;
+	} else {
+		std::cout << "I am rank " << me << " and the buffer I have been broadcast is = " << buffer
+				  << std::endl;
+	}
+}
+
 TEST_F(MPITest, reduce_check) {
 	int me = MPITestEnv::get_mpi_rank();
 	int sendbuf = 1;
