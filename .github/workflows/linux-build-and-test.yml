@@ -7,12 +7,10 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-
+  InstallMPI_CmakeCompilation :
     runs-on: ubuntu-latest
-
     env:
       TOKEN: ${{ secrets.TOKEN }}
-
     steps:
     - name: Install latest available gcc
       run: |
