@@ -7,7 +7,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  InstallMPI_CmakeCompilation :
+  InstallMPI__Latest_GCC__CmakeCompilation__GoogleTest :
     runs-on: ubuntu-latest
     env:
       TOKEN: ${{ secrets.TOKEN }}
