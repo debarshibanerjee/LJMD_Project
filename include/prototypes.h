@@ -25,6 +25,7 @@ extern "C"
 //I/O function
 extern int get_a_line(FILE *fp, char *buf);
 extern void output(mdsys_t *sys, FILE *erg, FILE *traj);
+int populate_data(FILE * fp, char (*line)[BLEN], char (*restfile)[BLEN], char (*trajfile)[BLEN], char (*ergfile)[BLEN], mdsys_t * sys, int * nprint);
 
 
 //physical functions
