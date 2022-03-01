@@ -11,4 +11,5 @@ cmake --build build/
 
 ./test_verification.sh
 
-# ./example_verification.sh
+./result_verification.sh
+
