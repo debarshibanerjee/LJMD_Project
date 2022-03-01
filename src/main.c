@@ -68,7 +68,23 @@ int main(int argc, char** argv) {
 	}
 	/* initialize forces and energies.*/
 	sys.nfi = 0;
+
+	int th_law_flag;
+#if defined THIRD_LAW_1
+	th_law_flag = 1;
+	force_optimized_with3LawN(&sys);
+#elif defined THIRD_LAW_2
+	th_law_flag = 2;
+	force_optimized_with3LawN_more_opt(&sys);
+#else
+	th_law_flag = 0;
 	force(&sys);
+#endif
+
+	if (sys.mpirank == 0) {
+		printf("Third Law Flag = %d\n", th_law_flag);
+	}
+
 	ekin(&sys);
 
 	if (sys.mpirank == 0) {
