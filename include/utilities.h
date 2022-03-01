@@ -19,6 +19,8 @@ extern double wallclock();
 extern void azzero(double *d, const int n);
 extern double pbc(double x, const double boxby2);
 extern void doublesleep(double t);
+extern void allocate_sys_arrays ( mdsys_t * const sys );
+extern void free_sys_arrays ( mdsys_t * const sys );
 
 
 #ifdef __cplusplus
