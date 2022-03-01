@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include "structures.h"
 
 
 #ifdef __cplusplus
@@ -21,7 +22,6 @@ extern double pbc(double x, const double boxby2);
 extern void doublesleep(double t);
 extern void allocate_sys_arrays ( mdsys_t * const sys );
 extern void free_sys_arrays ( mdsys_t * const sys );
-
 
 #ifdef __cplusplus
 }
