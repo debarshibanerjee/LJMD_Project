@@ -34,7 +34,7 @@ if(sys.mpirank==0){
 	printf("LJMD version %3.1f\n", LJMD_VERSION);
 
 
-	
+	//populate_data(stdin, line, restfile, trajfile, ergfile, &sys);
 	/* read input file */
 	if (get_a_line(stdin, line))
 		return 1;
