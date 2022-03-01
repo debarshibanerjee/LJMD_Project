@@ -34,41 +34,41 @@ if(sys.mpirank==0){
 	printf("LJMD version %3.1f\n", LJMD_VERSION);
 
 
-	
+	populate_data(stdin, &line, &restfile, &trajfile, &ergfile, &sys, &nprint);
 	/* read input file */
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.natoms = atoi(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.mass = atof(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.epsilon = atof(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.sigma = atof(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.rcut = atof(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.box = atof(line);
-	if (get_a_line(stdin, restfile))
-		return 1;
-	if (get_a_line(stdin, trajfile))
-		return 1;
-	if (get_a_line(stdin, ergfile))
-		return 1;
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.nsteps = atoi(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	sys.dt = atof(line);
-	if (get_a_line(stdin, line))
-		return 1;
-	nprint = atoi(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.natoms = atoi(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.mass = atof(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.epsilon = atof(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.sigma = atof(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.rcut = atof(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.box = atof(line);
+	//if (get_a_line(stdin, restfile))
+	//	return 1;
+	//if (get_a_line(stdin, trajfile))
+	//	return 1;
+	//if (get_a_line(stdin, ergfile))
+	//	return 1;
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.nsteps = atoi(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//sys.dt = atof(line);
+	//if (get_a_line(stdin, line))
+	//	return 1;
+	//nprint = atoi(line);
 }
 	/*Sending data to all MPI processors*/
 	MPI_Bcast(&(sys.natoms), 1, MPI_INT, 0, sys.mpicomm);
@@ -81,19 +81,21 @@ if(sys.mpirank==0){
 	MPI_Bcast(&(sys.dt), 1, MPI_DOUBLE, 0, sys.mpicomm);
 
 	/* allocate memory */
-	sys.rx = (double*)malloc(sys.natoms * sizeof(double));
-	sys.ry = (double*)malloc(sys.natoms * sizeof(double));
-	sys.rz = (double*)malloc(sys.natoms * sizeof(double));
-	sys.vx = (double*)malloc(sys.natoms * sizeof(double));
-	sys.vy = (double*)malloc(sys.natoms * sizeof(double));
-	sys.vz = (double*)malloc(sys.natoms * sizeof(double));
-	sys.fx = (double*)malloc(sys.natoms * sizeof(double));
-	sys.fy = (double*)malloc(sys.natoms * sizeof(double));
-	sys.fz = (double*)malloc(sys.natoms * sizeof(double));
+        allocate_sys_arrays ( &sys );
+	//sys.rx = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.ry = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.rz = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.vx = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.vy = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.vz = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.fx = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.fy = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.fz = (double*)malloc(sys.natoms * sizeof(double));
 
-	sys.cx = (double*)malloc(sys.natoms * sizeof(double));
-	sys.cy = (double*)malloc(sys.natoms * sizeof(double));
-	sys.cz = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.cx = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.cy = (double*)malloc(sys.natoms * sizeof(double));
+	//sys.cz = (double*)malloc(sys.natoms * sizeof(double));
+
 	/* read restart */
 
 if(sys.mpirank ==0){
@@ -154,18 +156,19 @@ if(sys.mpirank==0){
 	fclose(erg);
 	fclose(traj);
 }
-	free(sys.rx);
-	free(sys.ry);
-	free(sys.rz);
-	free(sys.vx);
-	free(sys.vy);
-	free(sys.vz);
-	free(sys.fx);
-	free(sys.fy);
-	free(sys.fz);
-	free(sys.cx);
-	free(sys.cy);
-	free(sys.cz);
+	free_sys_arrays ( &sys);
+        //free(sys.rx);
+	//free(sys.ry);
+	//free(sys.rz);
+	//free(sys.vx);
+	//free(sys.vy);
+	//free(sys.vz);
+	//free(sys.fx);
+	//free(sys.fy);
+	//free(sys.fz);
+	//free(sys.cx);
+	//free(sys.cy);
+	//free(sys.cz);
 
 	MPI_Finalize();
 	return 0;
