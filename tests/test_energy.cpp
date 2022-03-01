@@ -1,4 +1,3 @@
-// unit test example with test fixture
 #include "gtest/gtest.h"
 #include "prototypes.h"
 #include "structures.h"
