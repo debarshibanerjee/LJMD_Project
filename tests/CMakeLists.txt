@@ -22,15 +22,10 @@ if(ENABLE_TESTING)
   target_link_libraries(test_utils PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME Utils COMMAND test_utils)
 
-  add_executable(test_energy test_energy.cpp)
-  target_include_directories(test_energy PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
-  target_link_libraries(test_energy PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  add_test(NAME Energy COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_energy)
-
   add_executable(test_ekin test_ekin.cpp)
   target_include_directories(test_ekin PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   target_link_libraries(test_ekin PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
-  add_test(NAME Ekin COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_ekin)
+  add_test(NAME Ekin COMMAND ${MPIEXEC_EXECUTABLE} -np 4 test_ekin)
 
   add_executable(test_verlet_integration_detailed test_verlet_integration_detailed.cpp)
   target_include_directories(test_verlet_integration_detailed PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
