@@ -54,12 +54,12 @@ void allocate_sys_arrays ( mdsys_t * const sys ) {
   sys->fy = (double *) malloc( sys->natoms * sizeof(double) );
   sys->fz = (double *) malloc( sys->natoms * sizeof(double) );
 
-#ifdef USE_MPI
+
   // allocate support array fo centers
   sys->cx = (double *) malloc( sys->natoms * sizeof(double) );
   sys->cy = (double *) malloc( sys->natoms * sizeof(double) );
   sys->cz = (double *) malloc( sys->natoms * sizeof(double) );
-#endif //USE_MPI
+
 
   // allocate forces arrays
   sys->fx = (double *) malloc( sys->natoms * sizeof(double) );
@@ -87,12 +87,11 @@ void free_sys_arrays ( mdsys_t * const sys ) {
   free( sys->fy );
   free( sys->fz );
 
-#ifdef USE_MPI
+
   // free support
   free( sys->cx );
   free( sys->cy );
   free( sys->cz );
-#endif //USE_MPI
   
 
 }

@@ -39,9 +39,6 @@ int populate_data(FILE * fp, char (*line)[BLEN], char (*restfile)[BLEN], char (*
 
   //int rem, nloc;
   
-  /* Read input file if I'm rank 0 */
-  //if ( sys->rank == 0 ) {
-  
     // reads atom number from fp and saves it in data_struct sys
     if (get_a_line(fp, *line))
       return 1;
@@ -97,7 +94,7 @@ int populate_data(FILE * fp, char (*line)[BLEN], char (*restfile)[BLEN], char (*
     // reads box-size from fp and saves it in data_struct sys
     if (get_a_line(fp, *line))
       return 1;
-    nprint=atoi(*line);
+    *nprint=atoi(*line);
     
   //} //endif ( sys->rank == 0 )
 
