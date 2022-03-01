@@ -70,5 +70,15 @@ if(ENABLE_TESTING)
   target_include_directories(test_force_3LawN_more_opt PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   target_link_libraries(test_force_3LawN_more_opt PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
   add_test(NAME Force_3LawN_more_opt_2nd_version COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force_3LawN_more_opt)
+
+  add_executable(test_allocate_arrays test_allocate_arrays.cpp)
+  target_include_directories(test_allocate_arrays PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  target_link_libraries(test_allocate_arrays PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  add_test(NAME Array_Allocation COMMAND test_allocate_arrays)
+
+  add_executable(test_free_arrays test_free_arrays.cpp)
+  target_include_directories(test_free_arrays PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  target_link_libraries(test_free_arrays PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} testlib)
+  add_test(NAME Array_Freeing COMMAND test_free_arrays)
 endif()
 
