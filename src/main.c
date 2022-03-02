@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
 			return 3;
 		}
 	}
+
+
 	/* initialize forces and energies.*/
 	sys.nfi = 0;
 	force(&sys);

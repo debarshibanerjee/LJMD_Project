@@ -12,7 +12,7 @@ void force(mdsys_t* sys) {
 	azzero(sys->fy, sys->natoms);
 	azzero(sys->fz, sys->natoms);
 	azzero(sys->cx, sys->natoms);
-    azzero(sys->cy, sys->natoms); 
+	azzero(sys->cy, sys->natoms); 
 	azzero(sys->cz, sys->natoms);
 
 	MPI_Bcast(sys->rx, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
