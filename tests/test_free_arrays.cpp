@@ -5,6 +5,7 @@
 TEST(ArrayFreeingTest, test) {
 	mdsys_t sys;
 	sys.natoms = 2;
+	sys.nthreads = 1;
 	allocate_sys_arrays(&sys);
 	ASSERT_NE(sys.cx, nullptr);
 	ASSERT_NE(sys.cy, nullptr);

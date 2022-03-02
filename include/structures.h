@@ -5,7 +5,8 @@
  * about the MD system */
 struct _mdsys {
 	MPI_Comm mpicomm;
-	int natoms, nfi, nsteps, nsize, mpirank;
+	int nsize, mpirank, nthreads;
+	int natoms, nfi, nsteps; 
 	double dt, mass, epsilon, sigma, box, rcut;
 	double ekin, epot, temp;
 	double *rx, *ry, *rz;
