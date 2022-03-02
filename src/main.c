@@ -28,6 +28,13 @@ int main(int argc, char** argv) {
 	sys.nsize = size;
 	sys.mpicomm = MPI_COMM_WORLD;
 
+#if defined(_OPENMP)
+	#pragma omp parallel
+	sys.nthreads = omp_get_num_threads();
+#else
+	sys.nthreads = 1;
+#endif
+
 	if (sys.mpirank == 0) {
 		printf("LJMD version %3.1f\n", LJMD_VERSION);
 
@@ -67,15 +74,10 @@ int main(int argc, char** argv) {
 		}
 	}
 	/* initialize forces and energies.*/
+	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
 
-#if defined THIRD_LAW_1
-	force_optimized_with3LawN(&sys);
-#elif defined THIRD_LAW_2
-	force_optimized_with3LawN_more_opt(&sys);
-#else
 	force(&sys);
-#endif
 
 	ekin(&sys);
 
