@@ -10,6 +10,14 @@ class EkinTest : public ::testing::Test {
 		sys = new mdsys_t;
 		sys->natoms = 2;
 		sys->mass = 1.0;
+		int mpisize;
+		MPI_Comm_size(MPI_COMM_WORLD, &mpisize);
+		sys->nsize=mpisize;
+ 		int rank;
+                MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+		sys->mpirank= rank;
+		sys->mpicomm= MPI_COMM_WORLD;
+
 		sys->vx = new double[2];
 		sys->vy = new double[2];
 		sys->vz = new double[2];
@@ -31,17 +39,6 @@ class EkinTest : public ::testing::Test {
 	}
 };
 
-TEST_F(EkinTest, empty) {
-	mdsys_t* sys = new mdsys_t;
-	sys->natoms = 0;
-
-	ekin(sys);
-
-	ASSERT_DOUBLE_EQ(sys->ekin, 0.0);
-	ASSERT_DOUBLE_EQ(sys->temp, 0.0);
-
-	delete sys;
-}
 
 TEST_F(EkinTest, test1) {
 	ASSERT_NE(sys, nullptr);
@@ -54,6 +51,7 @@ TEST_F(EkinTest, test1) {
 
 	ASSERT_DOUBLE_EQ(sys->ekin, exp_ekin);
 	ASSERT_DOUBLE_EQ(sys->temp, exp_temp);
+
 }
 
 int main(int argc, char* argv[]) {
