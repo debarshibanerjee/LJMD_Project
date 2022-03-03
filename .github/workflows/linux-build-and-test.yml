@@ -51,4 +51,6 @@ jobs:
       env:
           CC: gcc-10
           CXX: g++-10
+          OMP_NUM_THREADS: 16
+          OMP_DYNAMIC: 0
       run: ctest -C $BUILD_TYPE -V

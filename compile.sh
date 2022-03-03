@@ -14,6 +14,7 @@ mkdir -p build
 cmake -S. -B ./build -D ENABLE_TESTING=yes -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DENABLE_OPENMP=$1
 cmake --build build/
 
+export OMP_NUM_THREADS=4
 ./test_verification.sh
 
 export OMP_NUM_THREADS=4
