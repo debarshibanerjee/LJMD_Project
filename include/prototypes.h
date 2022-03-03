@@ -31,12 +31,7 @@ int populate_data(FILE * fp, char (*line)[BLEN], char (*restfile)[BLEN], char (*
 //physical functions
 
 extern void force(mdsys_t *sys);
-<<<<<<< HEAD
-=======
 extern void force_omp_simple(mdsys_t *sys);
-extern void force_optimized_with3LawN(mdsys_t *sys);
-extern void force_optimized_with3LawN_more_opt(mdsys_t *sys);
->>>>>>> 784b117be83d47b3629194ebc6603c6c9936e964
 extern void ekin(mdsys_t *sys);
 extern void verlet_vel_update(mdsys_t *sys);
 extern void verlet_vel_propagation(mdsys_t *sys);
