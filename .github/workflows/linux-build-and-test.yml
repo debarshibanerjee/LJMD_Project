@@ -33,6 +33,8 @@ jobs:
         TOKEN: ${{ secrets.TOKEN }}
         CC: gcc-10
         CXX: g++-10
+        OMP_NUM_THREADS: 16
+        OMP_DYNAMIC: FALSE
       run: |
         export MPI_HOME=/home/${USER}/.openmpi
         cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
@@ -52,5 +54,5 @@ jobs:
           CC: gcc-10
           CXX: g++-10
           OMP_NUM_THREADS: 16
-          OMP_DYNAMIC: 0
+          OMP_DYNAMIC: FALSE
       run: ctest -C $BUILD_TYPE -V

@@ -15,5 +15,11 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 link_directories(${CMAKE_SOURCE_DIR}/src)
 add_executable(ljmd.x  ${CMAKE_SOURCE_DIR}/src/main.c)
-target_link_libraries(ljmd.x PRIVATE ${MPI_C_LIBRARIES} testlib m)
+
+if(ENABLE_OPENMP)
+	target_link_libraries(ljmd.x PRIVATE ${MPI_C_LIBRARIES} testlib m OpenMP::OpenMP_C)
+else()
+	target_link_libraries(ljmd.x PRIVATE ${MPI_C_LIBRARIES} testlib m)
+endif()
+
 target_compile_options(ljmd.x PRIVATE -O3 -ffast-math -fexpensive-optimizations -msse3 -Wall -Wextra)
