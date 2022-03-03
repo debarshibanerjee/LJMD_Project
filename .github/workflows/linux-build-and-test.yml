@@ -37,7 +37,7 @@ jobs:
         OMP_DYNAMIC: FALSE
       run: |
         export MPI_HOME=/home/${USER}/.openmpi
-        cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES
+        cmake -S $GITHUB_WORKSPACE -B $GITHUB_WORKSPACE/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_TESTING=YES -DENABLE_OPENMP=1
 
     - name: Download googletest and Build
       shell: bash
