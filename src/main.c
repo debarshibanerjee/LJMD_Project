@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	sys.nsize = size;
 	sys.mpicomm = MPI_COMM_WORLD;
 
-#if defined(_OPENMP)
+#ifdef _OPENMP
 	#pragma omp parallel
 	sys.nthreads = omp_get_num_threads();
 #else
@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
 
 	if (sys.mpirank == 0) {
 		printf("LJMD version %3.1f\n", LJMD_VERSION);
+		printf("Number of OpenMP Threads: %d\n", sys.nthreads);
 
 		populate_data(stdin, &line, &restfile, &trajfile, &ergfile, &sys, &nprint);
 		/* read input file */
@@ -74,12 +75,12 @@ int main(int argc, char** argv) {
 		}
 	}
 
-
 	/* initialize forces and energies.*/
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
 
-	force(&sys);
+	force_omp_simple(&sys);
+	/* force(&sys); */
 
 	ekin(&sys);
 
