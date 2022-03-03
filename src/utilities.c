@@ -49,7 +49,7 @@ void allocate_sys_arrays(mdsys_t* const sys) {
 	sys->fy = (double*)malloc(sys->natoms * sizeof(double));
 	sys->fz = (double*)malloc(sys->natoms * sizeof(double));
 
-	// allocate support array for cell list
+	// allocate support array for forces
 	sys->cx = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
 	sys->cy = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
 	sys->cz = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
@@ -80,7 +80,7 @@ void free_sys_arrays(mdsys_t* const sys) {
 	sys->fy = NULL;
 	sys->fz = NULL;
 
-	// free cell lists
+	// free support arrays
 	free(sys->cx);
 	free(sys->cy);
 	free(sys->cz);

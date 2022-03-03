@@ -1,7 +1,7 @@
 #include "prototypes.h"
 
-const double kboltz = 0.0019872067;             /* boltzman constant in kcal/mol/K */
-const double mvsq2e = 2390.05736153349; 	/* m*v^2 in kcal/mol */
+const double kboltz = 0.0019872067;		/* boltzman constant in kcal/mol/K */
+const double mvsq2e = 2390.05736153349; /* m*v^2 in kcal/mol */
 
 /* velocity verlet propagation step*/
 void verlet_vel_propagation(mdsys_t* sys) {
@@ -39,7 +39,9 @@ void velverlet(mdsys_t* sys) {
 	verlet_vel_propagation(sys);
 
 	/* compute forces and potential energy */
-	force(sys);
+
+	force_omp_simple(sys);
+	/* force(sys); */
 
 	/* update the velocities */
 	verlet_vel_update(sys);
