@@ -19,15 +19,15 @@ void force(mdsys_t* sys) {
 	MPI_Bcast(sys->rz, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
 
 //	zero energy and forces
-	/* azzero(sys->fx, sys->natoms); */
-	/* azzero(sys->fy, sys->natoms); */
-	/* azzero(sys->fz, sys->natoms); */
+	// azzero(sys->fx, sys->natoms); 
+	// azzero(sys->fy, sys->natoms); 
+	// azzero(sys->fz, sys->natoms); 
 	/* azzero(sys->cx, sys->natoms); */
 	/* azzero(sys->cy, sys->natoms); */
 	/* azzero(sys->cz, sys->natoms); */
 
 #ifdef _OPENMP
-	#pragma omp parallel reduction(+ : epot)
+	#pragma omp parallel reduction(+ : epot,epot_local)
 #endif
 	{
 		double rx, ry, rz;
@@ -42,11 +42,11 @@ void force(mdsys_t* sys) {
 #endif
 
 		cx = sys->cx + (tid * sys->natoms);
-		azzero(cx, sys->natoms);
+		azzero(cx, sys->natoms*sys->nthreads);
 		cy = sys->cy + (tid * sys->natoms);
-		azzero(cy, sys->natoms);
+		azzero(cy, sys->natoms*sys->nthreads);
 		cz = sys->cz + (tid * sys->natoms);
-		azzero(cz, sys->natoms);
+		azzero(cz, sys->natoms*sys->nthreads);
 
 		for (i = sys->mpirank; i < sys->natoms - 1; i += sys->nsize) {
 			if (((i - sys->mpirank) / sys->nsize) % sys->nthreads != tid)
@@ -64,7 +64,7 @@ void force(mdsys_t* sys) {
 					rsqinv = 1.0 / rsq;
 					r6 = rsqinv * rsqinv * rsqinv;
 					ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
-					epot += (c12 * r6 * r6 - c6 * r6);
+					epot_local += (c12 * r6 * r6 - c6 * r6);
 					cx[i] += rx * ffac;
 					cy[i] += ry * ffac;
 					cz[i] += rz * ffac;
@@ -93,7 +93,7 @@ void force(mdsys_t* sys) {
 			}
 		}
 	}
-	sys->epot = epot;
+//	sys->epot = epot;
 
 	MPI_Reduce(sys->cx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(sys->cy, sys->fy, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
