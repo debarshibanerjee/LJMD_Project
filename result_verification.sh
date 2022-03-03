@@ -7,7 +7,6 @@ make check
 cd ..
 
 export OMP_DYNAMIC=FALSE
-export OMP_NUM_THREADS=4
 
 echo "Running make check in examples dir for MPI..."
 cd examples/
