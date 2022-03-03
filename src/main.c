@@ -73,6 +73,8 @@ int main(int argc, char** argv) {
 			return 3;
 		}
 	}
+
+
 	/* initialize forces and energies.*/
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
