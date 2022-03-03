@@ -4,15 +4,15 @@
 /* compute kinetic energy */
 void ekin(mdsys_t* sys) {
 	int i, ii;
-	double partial_ekin=0.0;
+	double partial_ekin = 0.0;
 	sys->ekin = 0.0;
 
 	MPI_Bcast(sys->vx, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
-        MPI_Bcast(sys->vy, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
-        MPI_Bcast(sys->vz, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
-  
+	MPI_Bcast(sys->vy, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
+	MPI_Bcast(sys->vz, sys->natoms, MPI_DOUBLE, 0, sys->mpicomm);
+
 #ifdef _OPENMP
-	#pragma omp parallel for default(shared) private(i) reduction(+ : partial_ekin)
+	#pragma omp parallel for default(shared) private(i, ii) reduction(+ : partial_ekin)
 #endif
 	for (i = 0; i < sys->natoms; i += sys->nsize) {
 		ii = i + sys->mpirank;

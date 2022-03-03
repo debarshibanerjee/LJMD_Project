@@ -98,6 +98,36 @@ if(ENABLE_TESTING)
   endif()
   add_test(NAME Force COMMAND ${MPIEXEC_EXECUTABLE} --oversubscribe -np 2 test_force)
 
+<<<<<<< HEAD
+=======
+  add_executable(test_force_omp_simple test_force_omp_simple.cpp)
+  target_include_directories(test_force_omp_simple PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  if(ENABLE_OPENMP)
+	  target_link_libraries(test_force_omp_simple PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib OpenMP::OpenMP_CXX)
+  else()
+	  target_link_libraries(test_force_omp_simple PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib)
+  endif()
+  add_test(NAME Force_OMP_simple COMMAND ${MPIEXEC_EXECUTABLE} --oversubscribe -np 2 test_force_omp_simple)
+
+  add_executable(test_force_3LawN test_force_3LawN.cpp)
+  target_include_directories(test_force_3LawN PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  if(ENABLE_OPENMP)
+	  target_link_libraries(test_force_3LawN PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib OpenMP::OpenMP_CXX)
+  else()
+	  target_link_libraries(test_force_3LawN PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib)
+  endif()
+  add_test(NAME Force_3LawN_1st_version COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force_3LawN)
+
+  add_executable(test_force_3LawN_more_opt test_force_3LawN_more_opt.cpp)
+  target_include_directories(test_force_3LawN_more_opt PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
+  if(ENABLE_OPENMP)
+	  target_link_libraries(test_force_3LawN_more_opt PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib OpenMP::OpenMP_CXX)
+  else()
+	  target_link_libraries(test_force_3LawN_more_opt PRIVATE GTest::GTestMain GTest::GTest ${MPI_C_LIBRARIES} ljmd_lib)
+  endif()
+  add_test(NAME Force_3LawN_more_opt_2nd_version COMMAND ${MPIEXEC_EXECUTABLE} -np 1 test_force_3LawN_more_opt)
+
+>>>>>>> 784b117be83d47b3629194ebc6603c6c9936e964
   add_executable(test_allocate_arrays test_allocate_arrays.cpp)
   target_include_directories(test_allocate_arrays PRIVATE ${CMAKE_SOURCE_DIR}/include ${MPI_INCLUDE_PATH})
   if(ENABLE_OPENMP)
