@@ -2,7 +2,8 @@
 #include "structures.h"
 #include "gtest/gtest.h"
 
-class Verlet_Integration_Test_Detailed : public ::testing::TestWithParam<std::tuple<double, double>> {
+class Verlet_Integration_Test_Detailed
+	: public ::testing::TestWithParam<std::tuple<double, double>> {
    protected:
 	mdsys_t* sys;
 

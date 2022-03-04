@@ -6,7 +6,7 @@
 struct _mdsys {
 	MPI_Comm mpicomm;
 	int nsize, mpirank, nthreads;
-	int natoms, nfi, nsteps; 
+	int natoms, nfi, nsteps;
 	double dt, mass, epsilon, sigma, box, rcut;
 	double ekin, epot, temp;
 	double *rx, *ry, *rz;

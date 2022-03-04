@@ -37,8 +37,8 @@ TEST(test_output, output) {
 	double etot;
 	mdsys_t sys_1;
 	erg = fopen("ergfile.txt", "r");
-	fscanf(erg, "%d %lf %lf %lf %lf", &(sys_1.nfi), &(sys_1.temp), &(sys_1.ekin),
-		   &(sys_1.epot), &etot);
+	fscanf(erg, "%d %lf %lf %lf %lf", &(sys_1.nfi), &(sys_1.temp), &(sys_1.ekin), &(sys_1.epot),
+		   &etot);
 	fclose(erg);
 
 	ASSERT_EQ(sys_1.nfi, 137);
@@ -62,8 +62,7 @@ TEST(test_output, output) {
 	sys_2.rz = (double*)malloc(sys_2.natoms * sizeof(double));
 
 	for (int i = 0; i < sys.natoms; ++i) {
-		fscanf(traj, "Ar %lf %lf %lf\n", &(sys_2.rx[i]), &(sys_2.ry[i]),
-			   &(sys_2.rz[i]));
+		fscanf(traj, "Ar %lf %lf %lf\n", &(sys_2.rx[i]), &(sys_2.ry[i]), &(sys_2.rz[i]));
 
 		ASSERT_DOUBLE_EQ(sys_2.rx[i], (double)i / 100. + 1.0);
 		ASSERT_DOUBLE_EQ(sys_2.ry[i], (double)i / 100. + 2.0);
