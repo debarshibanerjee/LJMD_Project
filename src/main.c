@@ -79,13 +79,16 @@ int main(int argc, char** argv) {
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
 
-      
 	/*calling the Force function*/
-     #ifdef DEFAULT
-	force(&sys); 
-     #else
-        force_omp_simple(&sys);   //fancy OMP implementation
-     #endif
+#ifdef SIMPLE
+	if (sys.mpirank == 0)
+		printf("Using simpler force function.\n");
+	force_omp_simple(&sys);	 // simpler OMP+MPI implementation
+#else
+	if (sys.mpirank == 0)
+		printf("Using default force function.\n");
+	force(&sys);  // better OMP+MPI implementation
+#endif
 
 	ekin(&sys);
 
