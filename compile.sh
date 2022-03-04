@@ -16,10 +16,10 @@ cmake -S. -B ./build -DENABLE_TESTING=no -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DENA
 cmake --build build/
 
 # export OMP_DYNAMIC=FALSE
-# export OMP_NUM_THREADS=2
+# export OMP_NUM_THREADS=4
 #./test_verification.sh
 
 export OMP_DYNAMIC=FALSE
-export OMP_NUM_THREADS=2
+export OMP_NUM_THREADS=4
 ./result_verification.sh
 
