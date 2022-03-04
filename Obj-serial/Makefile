@@ -1,26 +1,18 @@
 # -*- Makefile -*-
 SHELL=/bin/sh
-CC=gcc
-CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer -DLJMD_VERSION=1.0
-LDLIBS=-lm
+############################################
+# derived makefile variables
+OBJ_SERIAL=$(SRC:src/%.f90=Obj-serial/%.o)
+############################################
 
-# list of source files
-SRC=ljmd.c
-VPATH=../src
-OBJ=$(SRC:%.c=%.o)
+default: serial
 
-default: ../ljmd-serial.x
+serial:
+	$(MAKE) $(MFLAGS) -C Obj-$@
 
 clean:
-	rm -f *.mod *.o ../ljmd-serial.x
+	$(MAKE) $(MFLAGS) -C Obj-serial clean
+	$(MAKE) $(MFLAGS) -C examples clean
 
-# linker rule
-../ljmd-serial.x: $(OBJ)
-	$(CC) -o $@ $(CFLAGS) $^ $(LDLIBS)
-
-# compilation pattern rule for objects
-%.o: %.c
-	$(CC) -c $(CFLAGS) $<
-
-# dependencies
-ljmd.o: ljmd.c
+check: serial
+	$(MAKE) $(MFLAGS) -C examples check

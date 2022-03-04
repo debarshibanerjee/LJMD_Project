@@ -1,8 +1,6 @@
 #include "gtest/gtest.h"
 #include "utilities.h"
 
-
-
 TEST(TestWallClock, one)
 {
     double t_test=-wallclock();
