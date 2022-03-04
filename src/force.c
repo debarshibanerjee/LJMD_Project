@@ -29,6 +29,7 @@ void force(mdsys_t* sys) {
 	azzero(sys->cx, sys->nthreads*sys->natoms);
 	azzero(sys->cy, sys->nthreads*sys->natoms);
 	azzero(sys->cz, sys->nthreads*sys->natoms);
+
 #ifdef _OPENMP
 	#pragma omp parallel private(tid)
 #endif
@@ -36,9 +37,9 @@ void force(mdsys_t* sys) {
 		double rx, ry, rz;
 		double *cx, *cy, *cz;
 		double rsq, ffac;
-		double epot_local = 0.0;
 		int grids=sys->nsize*sys->nthreads;
 		int i,ii,j;
+
 #ifdef _OPENMP
 		int tid = omp_get_thread_num();
 #else
@@ -50,13 +51,13 @@ void force(mdsys_t* sys) {
 		cz = sys->cz + (tid * sys->natoms);
 
 		for (i = 0; i < sys->natoms - 1; i += grids) {
-			if (((i - sys->mpirank) / sys->nsize) % sys->nthreads != tid)
-				continue;
-			for (int j = i + 1; j < (sys->natoms); ++j) {
+			ii=i+sys->mpirank*sys->nthreads+tid;
+			if(ii> (sys->natoms)-1) break;
+			for (int j = ii + 1; j < (sys->natoms); ++j) {
 				/* get distance between particle i and j */
-				rx = pbc(sys->rx[i] - sys->rx[j], 0.5 * sys->box);
-				ry = pbc(sys->ry[i] - sys->ry[j], 0.5 * sys->box);
-				rz = pbc(sys->rz[i] - sys->rz[j], 0.5 * sys->box);
+				rx = pbc(sys->rx[ii] - sys->rx[j], 0.5 * sys->box);
+				ry = pbc(sys->ry[ii] - sys->ry[j], 0.5 * sys->box);
+				rz = pbc(sys->rz[ii] - sys->rz[j], 0.5 * sys->box);
 				rsq = rx * rx + ry * ry + rz * rz;
 
 				/* compute force and energy if within cutoff */
@@ -65,10 +66,11 @@ void force(mdsys_t* sys) {
 					rsqinv = 1.0 / rsq;
 					r6 = rsqinv * rsqinv * rsqinv;
 					ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
-					epot_local += (c12 * r6 * r6 - c6 * r6);
-					cx[i] += rx * ffac;
-					cy[i] += ry * ffac;
-					cz[i] += rz * ffac;
+					#pragma omp atomic
+					epot += (c12 * r6 * r6 - c6 * r6);
+					cx[ii] += rx * ffac;
+					cy[ii] += ry * ffac;
+					cz[ii] += rz * ffac;
 
 					cx[j] -= rx * ffac;
 					cy[j] -= ry * ffac;
@@ -76,7 +78,6 @@ void force(mdsys_t* sys) {
 				}
 			}
 		}
-		epot += epot_local;
 #ifdef _OPENMP
 	#pragma omp barrier	 // sync everything
 #endif
@@ -94,7 +95,6 @@ void force(mdsys_t* sys) {
 			}
 		}
 	}
-	//	sys->epot = epot;
 
 	MPI_Reduce(sys->cx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(sys->cy, sys->fy, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
