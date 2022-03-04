@@ -27,7 +27,7 @@ void force(mdsys_t* sys) {
 	/* azzero(sys->cz, sys->natoms); */
 
 #ifdef _OPENMP
-	#pragma omp parallel reduction(+ : epot,epot_local)
+	#pragma omp parallel reduction(+ : epot)
 #endif
 	{
 		double rx, ry, rz;
@@ -42,11 +42,11 @@ void force(mdsys_t* sys) {
 #endif
 
 		cx = sys->cx + (tid * sys->natoms);
-		azzero(cx, sys->natoms*sys->nthreads);
+		azzero(cx, sys->natoms * sys->nthreads);
 		cy = sys->cy + (tid * sys->natoms);
-		azzero(cy, sys->natoms*sys->nthreads);
+		azzero(cy, sys->natoms * sys->nthreads);
 		cz = sys->cz + (tid * sys->natoms);
-		azzero(cz, sys->natoms*sys->nthreads);
+		azzero(cz, sys->natoms * sys->nthreads);
 
 		for (i = sys->mpirank; i < sys->natoms - 1; i += sys->nsize) {
 			if (((i - sys->mpirank) / sys->nsize) % sys->nthreads != tid)
@@ -93,14 +93,13 @@ void force(mdsys_t* sys) {
 			}
 		}
 	}
-//	sys->epot = epot;
+	//	sys->epot = epot;
 
 	MPI_Reduce(sys->cx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(sys->cy, sys->fy, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(sys->cz, sys->fz, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(&epot, &sys->epot, 1, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 }
-
 
 void force_omp_simple(mdsys_t* sys) {
 	double epot = 0.0;
@@ -132,47 +131,47 @@ void force_omp_simple(mdsys_t* sys) {
 	double* cz = sys->cz;
 
 #ifdef _OPENMP
-	#pragma omp parallel for shared(sys, rx, ry, rz, rcsq, c6, c12) reduction(+ : epot)
+	#pragma omp parallel for shared(sys, rx, ry, rz, rcsq, c6, c12) reduction(+ : epot, cx[:sys->natoms], cy[:sys->natoms], cz[:sys->natoms])
 #endif
 	for (int i = 0; i < (sys->natoms - 1); i += sys->nsize) {
 		int ii = i + sys->mpirank;
-		if (ii >= (sys->natoms))
-			break;
-		for (int j = ii + 1; j < (sys->natoms); ++j) {
-			/* get distance between particle i and j */
-			double prx = pbc(rx[ii] - rx[j], 0.5 * sys->box);
-			double pry = pbc(ry[ii] - ry[j], 0.5 * sys->box);
-			double prz = pbc(rz[ii] - rz[j], 0.5 * sys->box);
-			double rsq = (prx * prx + pry * pry + prz * prz);
+		if (ii < (sys->natoms - 1)) {
+			for (int j = ii + 1; j < (sys->natoms); ++j) {
+				/* get distance between particle i and j */
+				double prx = pbc(rx[ii] - rx[j], 0.5 * sys->box);
+				double pry = pbc(ry[ii] - ry[j], 0.5 * sys->box);
+				double prz = pbc(rz[ii] - rz[j], 0.5 * sys->box);
+				double rsq = (prx * prx + pry * pry + prz * prz);
 
-			/* compute force and energy if within cutoff */
-			if (rsq < rcsq) {
-				double rsqinv = 1.0 / rsq;
-				double r6 = rsqinv * rsqinv * rsqinv;
-				double ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
-				epot += c12 * r6 * r6 - c6 * r6;
+				/* compute force and energy if within cutoff */
+				if (rsq < rcsq) {
+					double rsqinv = 1.0 / rsq;
+					double r6 = rsqinv * rsqinv * rsqinv;
+					double ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
+					epot += c12 * r6 * r6 - c6 * r6;
 
-				/* #ifdef _OPENMP */
-				/* 	#pragma omp atomic */
-				/* 				sys->cx[ii] += prx * ffac; */
-				/* 	#pragma omp atomic */
-				/* 				sys->cy[ii] += pry * ffac; */
-				/* 	#pragma omp atomic */
-				/* 				sys->cz[ii] += prz * ffac; */
-				/* 	#pragma omp atomic */
-				/* 				sys->cx[j] -= prx * ffac; */
-				/* 	#pragma omp atomic */
-				/* 				sys->cy[j] -= pry * ffac; */
-				/* 	#pragma omp atomic */
-				/* 				sys->cz[j] -= prz * ffac; */
-				/* #else */
-				cx[ii] += prx * ffac;
-				cy[ii] += pry * ffac;
-				cz[ii] += prz * ffac;
-				cx[j] -= prx * ffac;
-				cy[j] -= pry * ffac;
-				cz[j] -= prz * ffac;
-				/* #endif */
+					/* #ifdef _OPENMP */
+					/* 	#pragma omp atomic */
+					/* 				sys->cx[ii] += prx * ffac; */
+					/* 	#pragma omp atomic */
+					/* 				sys->cy[ii] += pry * ffac; */
+					/* 	#pragma omp atomic */
+					/* 				sys->cz[ii] += prz * ffac; */
+					/* 	#pragma omp atomic */
+					/* 				sys->cx[j] -= prx * ffac; */
+					/* 	#pragma omp atomic */
+					/* 				sys->cy[j] -= pry * ffac; */
+					/* 	#pragma omp atomic */
+					/* 				sys->cz[j] -= prz * ffac; */
+					/* #else */
+					cx[ii] += prx * ffac;
+					cy[ii] += pry * ffac;
+					cz[ii] += prz * ffac;
+					cx[j] -= prx * ffac;
+					cy[j] -= pry * ffac;
+					cz[j] -= prz * ffac;
+					/* #endif */
+				}
 			}
 		}
 	}
@@ -182,5 +181,4 @@ void force_omp_simple(mdsys_t* sys) {
 	MPI_Reduce(sys->cz, sys->fz, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(&epot, &(sys->epot), 1, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 }
-
 
