@@ -43,8 +43,8 @@ void velverlet(mdsys_t* sys) {
 
 	/* compute forces and potential energy */
 
-	force_omp_simple(sys);
-	/* force(sys); */
+	/*force_omp_simple(sys);*/
+	force(sys);
 
 	/* update the velocities */
 	verlet_vel_update(sys);
