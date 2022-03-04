@@ -2,6 +2,8 @@
 
 const double kboltz = 0.0019872067;             /* boltzman constant in kcal/mol/K */
 const double mvsq2e = 2390.05736153349; 	/* m*v^2 in kcal/mol */
+
+
 /* velocity verlet propagation step*/
 void verlet_vel_propagation(mdsys_t* sys) {
 	int i;
@@ -43,8 +45,12 @@ void velverlet(mdsys_t* sys) {
 
 	/* compute forces and potential energy */
 
-	/*force_omp_simple(sys);*/
+	/*Force function selected by the macro*/
+      #ifdef DEFAULT
 	force(sys);
+      #else
+        force_omp_simple(sys); //fancy OMP implementation
+      #endif
 
 	/* update the velocities */
 	verlet_vel_update(sys);
