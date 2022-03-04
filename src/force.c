@@ -3,6 +3,7 @@
 
 void force(mdsys_t* sys) {
 	double epot = 0.0;
+	int tid;
 
 	double sigma, sigma6;
 	double c6, c12, rcsq;
@@ -25,16 +26,19 @@ void force(mdsys_t* sys) {
 	/* azzero(sys->cx, sys->natoms); */
 	/* azzero(sys->cy, sys->natoms); */
 	/* azzero(sys->cz, sys->natoms); */
-
+	azzero(sys->cx, sys->nthreads*sys->natoms);
+	azzero(sys->cy, sys->nthreads*sys->natoms);
+	azzero(sys->cz, sys->nthreads*sys->natoms);
 #ifdef _OPENMP
-	#pragma omp parallel reduction(+ : epot)
+	#pragma omp parallel private(tid)
 #endif
 	{
 		double rx, ry, rz;
 		double *cx, *cy, *cz;
 		double rsq, ffac;
 		double epot_local = 0.0;
-		int i;
+		int grids=sys->nsize*sys->nthreads;
+		int i,ii,j;
 #ifdef _OPENMP
 		int tid = omp_get_thread_num();
 #else
@@ -42,13 +46,10 @@ void force(mdsys_t* sys) {
 #endif
 
 		cx = sys->cx + (tid * sys->natoms);
-		azzero(cx, sys->natoms * sys->nthreads);
 		cy = sys->cy + (tid * sys->natoms);
-		azzero(cy, sys->natoms * sys->nthreads);
 		cz = sys->cz + (tid * sys->natoms);
-		azzero(cz, sys->natoms * sys->nthreads);
 
-		for (i = sys->mpirank; i < sys->natoms - 1; i += sys->nsize) {
+		for (i = 0; i < sys->natoms - 1; i += grids) {
 			if (((i - sys->mpirank) / sys->nsize) % sys->nthreads != tid)
 				continue;
 			for (int j = i + 1; j < (sys->natoms); ++j) {
