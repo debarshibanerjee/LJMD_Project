@@ -79,8 +79,13 @@ int main(int argc, char** argv) {
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
 
-	/*force_omp_simple(&sys);*/
+      
+	/*calling the Force function*/
+     #ifdef DEFAULT
 	force(&sys); 
+     #else
+        force_omp_simple(&sys);   //fancy OMP implementation
+     #endif
 
 	ekin(&sys);
 

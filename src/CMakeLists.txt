@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 project(ljmd VERSION 1.0 LANGUAGES C)
 
 add_compile_definitions(LJMD_VERSION=1.0)
+add_definitions(-DDEFAULT)
+
+
 find_package(MPI REQUIRED)
 
 if(ENABLE_OPENMP)
