@@ -27,7 +27,7 @@ void force(mdsys_t* sys) {
 	/* azzero(sys->cz, sys->natoms); */
 
 #ifdef _OPENMP
-	#pragma omp parallel reduction(+ : epot)
+	#pragma omp parallel reduction(+ : epot,epot_local)
 #endif
 	{
 		double rx, ry, rz;
@@ -42,11 +42,11 @@ void force(mdsys_t* sys) {
 #endif
 
 		cx = sys->cx + (tid * sys->natoms);
-		azzero(cx, sys->natoms);
+		azzero(cx, sys->natoms*sys->nthreads);
 		cy = sys->cy + (tid * sys->natoms);
-		azzero(cy, sys->natoms);
+		azzero(cy, sys->natoms*sys->nthreads);
 		cz = sys->cz + (tid * sys->natoms);
-		azzero(cz, sys->natoms);
+		azzero(cz, sys->natoms*sys->nthreads);
 
 		for (i = sys->mpirank; i < sys->natoms - 1; i += sys->nsize) {
 			if (((i - sys->mpirank) / sys->nsize) % sys->nthreads != tid)
@@ -93,7 +93,7 @@ void force(mdsys_t* sys) {
 			}
 		}
 	}
-	sys->epot = epot;
+//	sys->epot = epot;
 
 	MPI_Reduce(sys->cx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 	MPI_Reduce(sys->cy, sys->fy, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
