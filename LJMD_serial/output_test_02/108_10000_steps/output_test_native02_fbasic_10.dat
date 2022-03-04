@@ -1,0 +1,6 @@
+LJMD version 1.0
+Startup time:      0.005s
+Starting simulation with 108 atoms for 10000 steps.
+     NFI            TEMP            EKIN                 EPOT              ETOT
+       0          72.64159143          23.16879408        -160.48438434        -137.31559026
+Simulation Done. Run time:     19.634s
