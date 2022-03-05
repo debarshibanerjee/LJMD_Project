@@ -98,6 +98,19 @@ void allocate_sys_arrays(mdsys_t* const sys) {
 	sys->cx = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
 	sys->cy = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
 	sys->cz = (double*)malloc(sys->nthreads * sys->natoms * sizeof(double));
+
+	// allocate cells
+	sys->clist = (cell_t*)malloc(sys->ncells * sizeof(cell_t));
+
+	// allocate cell_counter
+	sys->cell_counter = (int*)malloc(sys->ncells * sizeof(int));
+
+	// allocate pair_list
+	sys->plist= (int*)malloc(2*26*(sys->ncells) * sizeof(int));
+
+	// allocate atom indices
+	for(int i=0;i<sys->ncells;i++)
+		sys->clist[i].idxlist=(int*)malloc(sys->natoms * sizeof(int));
 }
 
 void free_sys_arrays(mdsys_t* const sys) {
