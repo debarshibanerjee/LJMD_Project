@@ -33,6 +33,34 @@ double pbc(double x, const double boxby2) {
 	return x;
 }
 
+void ordering_atoms(mdsys_t* const sys){
+	int counter, cell_index;
+	int cell_x,cell_y,cell_z;
+	double local_posx,local_posy,local_posz;
+	double cell_size= sys->box/sys->ncel_d;
+	int half_box = sys->box*0.5;
+	int n=sys->ncel_d;
+
+	for(int i=0;i<sys->ncells;i++) sys->cell_counter[i]=0;
+
+	for(int at=0;at<sys->natoms;at++){
+	        local_posx= pbc(sys->rx[at],half_box);	
+	        local_posy= pbc(sys->ry[at],half_box);	
+	        local_posz= pbc(sys->rz[at],half_box);	
+
+		cell_x=(local_posx+half_box)/cell_size;
+		cell_y=(local_posy+half_box)/cell_size;
+		cell_z=(local_posz+half_box)/cell_size;
+
+		cell_index= cell_z+n*cell_y+n*n*cell_x;
+
+		counter=sys->cell_counter[cell_index];
+		sys->clist[cell_index].idxlist[counter]=at;
+		sys->cell_counter[cell_index]+=1;
+	}
+	for(int i=0;i<sys->ncells;i++) sys->clist[i].natoms=sys->cell_counter[i]-1;
+}
+
 void cell_localization(mdsys_t* const sys){
 	int counter=0;
 	int n=sys->ncel_d;
