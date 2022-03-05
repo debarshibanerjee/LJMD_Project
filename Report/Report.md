@@ -1,18 +1,18 @@
-#Report
+# Report of the LJMD Project
 In this report we describe the steps followed for benchmarking the LJMD code, and the results obtained.
 
 The benchmark process has been divided in 3 tasks:
- - single-core optimization
- - MPI parallelization
+ - refactoring/single-core optimization (assigned to S. Di Gioia)
+ - MPI parallelization (assigned to A. )
  - OMP parallelization
 
 
-#How to compile and run the code
+## Compilation support for the LJMD code
 
 A cmake version higher than 3.15 is required to run the code.
 
 
-#Single-core optimization
+## Single-core optimization
 
 This part focuses on the optimization of the serial code. 
 
@@ -34,10 +34,19 @@ Then, we have applied our physical knowledge, and we optimize further the force 
 Clearly, we have implemented these improvements having in mind that these shall be mergeable with MPI and OpenMP. 
 
 
-#MPI benchmark
+## MPI benchmark
 
-A benchmark for MPI has been performed measuring computation times for [1, 32] cores for both argon_108.inp and argon_2916.inp. The benchmark took place on 2 computational nodes on the Ulysses cluster.
+A benchmark for MPI has been performed measuring computation times for [1, 32] cores for both argon_108.inp and argon_2916.inp. The benchmark took place on 2 computational nodes of the regular partiton 1 on the Ulysses cluster [at SISSA].
+We performed 30 runs per each MPI configuration and select 2,4,8,16 cores on single node, and 24 and 32 corse divided by 2 nodes.
+Below we show the average time scaling of our code, with respect to the number of MPI tasks, where each MPI task is assigned to one distinct physical core.
 
+
+![time_scaling_MPI.png](../plots/scaling_MPI-1.png)
+
+We can observe that the code shows a better scaling for the simulation with a larger number of atoms,so with bigger size, and fewer steps  (Argon-2916).
+This is even more evident in the plot with the average estimated SPEEDUP (S= T(1) /T(N) , where T(1): serial run time, or run time measured with 1 MPI task, and T(N): run time measured with N MPI tasks).
+
+![speedup_plot.png](../plots/SPEEDUP_MPI_LJMD.png)
 
 The results are presented below, both in graphical and tabular form. 
 
