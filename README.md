@@ -11,6 +11,6 @@ The commits in the repository correlate to usernames and people as follows:
 - AlexTru96  - Alexander Trujillo
 
 
-The report, whit the description of the procedure followed for the code optimization, and the results of the bencmark,
+The report, with the description of the procedure followed for the code optimization, and the results of the bencmark,
 can be found in directory Report.
 
