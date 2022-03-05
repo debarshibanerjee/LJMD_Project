@@ -3,8 +3,8 @@ In this report we describe the steps followed for benchmarking the LJMD code, an
 
 The benchmark process has been divided in 3 tasks:
  - refactoring/single-core optimization (assigned to S. Di Gioia)
- - MPI parallelization (assigned to A. )
- - OMP parallelization
+ - MPI parallelization (assigned to A. Trujillo )
+ - OMP parallelization (assigned to D. Banerjee)
 
 
 ## Compilation support for the LJMD code
@@ -38,7 +38,10 @@ Clearly, we have implemented these improvements having in mind that these shall 
 
 A benchmark for MPI has been performed measuring computation times for [1, 32] cores for both argon_108.inp and argon_2916.inp. The benchmark took place on 2 computational nodes of the regular partiton 1 on the Ulysses cluster [at SISSA].
 We performed 30 runs per each MPI configuration and select 2,4,8,16 cores on single node, and 24 and 32 corse divided by 2 nodes.
-Below we show the average time scaling of our code, with respect to the number of MPI tasks, where each MPI task is assigned to one distinct physical core.
+
+The results are presented below, both in graphical and tabular form. 
+
+In the first plot we show the average time scaling of our code, with respect to the number of MPI tasks, where each MPI task is assigned to one distinct physical core.
 
 
 ![time_scaling_MPI.png](../plots/scaling_MPI-1.png)
@@ -48,7 +51,7 @@ This is even more evident in the plot with the average estimated SPEEDUP (S= T(1
 
 ![speedup_plot.png](../plots/SPEEDUP_MPI_LJMD.png)
 
-The results are presented below, both in graphical and tabular form. 
+
 
 #Hybrid benchmark (with OMP)
 
