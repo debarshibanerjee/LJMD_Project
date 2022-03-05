@@ -93,7 +93,8 @@ int main(int argc, char** argv) {
 	/* initialize forces and energies.*/
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
-
+	
+	ordering_atoms(&sys);  
 	/*calling the Force function*/
 #ifdef SIMPLE
 	if (sys.mpirank == 0)
