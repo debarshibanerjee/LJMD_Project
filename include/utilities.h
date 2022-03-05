@@ -20,7 +20,10 @@ extern double pbc(double x, const double boxby2);
 extern void doublesleep(double t);
 extern void allocate_sys_arrays(mdsys_t* const sys);
 extern void free_sys_arrays(mdsys_t* const sys);
-
+extern void pairlist_creation(mdsys_t* const sys);
+extern void cell_localization(mdsys_t* const sys);
+extern void ordering_atoms(mdsys_t* const sys);
+extern void print_cells(mdsys_t* const sys);
 #ifdef __cplusplus
 }
 #endif
