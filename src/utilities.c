@@ -48,6 +48,36 @@ void cell_localization(mdsys_t* const sys){
 	}
 }
 
+void pairlist_creation(mdsys_t* const sys){
+	int counter=0,cell_index;
+	int x_pos,y_pos,z_pos;
+	int near_xpos,near_ypos,near_zpos;
+	int n=sys->ncel_d;
+	int N=sys->ncells;
+	for(int c=0;c<N;c++){
+		x_pos=sys->clist[c].x_pos;
+		y_pos=sys->clist[c].y_pos;
+		z_pos=sys->clist[c].z_pos;
+		for(int i=-1;i<2;i++){
+			for(int j=-1; j<2;j++){
+				for(int k=-1;k<2;k++){
+					near_xpos=x_pos+i;
+					near_ypos=y_pos+j;
+					near_zpos=z_pos+k;
+					cell_index=near_zpos+n*near_ypos+n*n*near_xpos;
+					if(near_xpos>n-1||near_xpos<0) continue;
+					if(near_ypos>n-1||near_ypos<0) continue;
+					if(near_zpos>n-1||near_zpos<0) continue;
+					sys->plist[2*counter]=c;
+					sys->plist[2*counter+1]=cell_index;
+					counter++;
+				}
+			}
+		}
+	}
+	sys->npairs = counter;
+}
+
 void allocate_sys_arrays(mdsys_t* const sys) {
 	// allocate coordinates arrays
 	sys->rx = (double*)malloc(sys->natoms * sizeof(double));
