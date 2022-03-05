@@ -57,10 +57,18 @@ int main(int argc, char** argv) {
 		printf("Communication time: %10.3fs\n", wallclock() - t_start);
         }
 
+    	int ncell_perdim;
+    	int cells = sys.box/sys.rcut;
+    	ncell_perdim = (cells%2==0)? cells+1:cells;
+    	sys.ncel_d= ncell_perdim;
+    	sys.ncells = ncell_perdim*ncell_perdim*ncell_perdim; 
         
-
 	/* allocate memory */
 	allocate_sys_arrays(&sys);
+
+	/* cell and pair list creation*/
+	cell_localization(&sys);
+    	pairlist_creation(&sys);
 
 	/* read restart */
 	if (sys.mpirank == 0) {
