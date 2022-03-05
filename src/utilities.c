@@ -33,6 +33,21 @@ double pbc(double x, const double boxby2) {
 	return x;
 }
 
+void cell_localization(mdsys_t* const sys){
+	int counter=0;
+	int n=sys->ncel_d;
+	for(int i=0;i<n;i++){
+		for(int j=0; j<n;j++){
+			for(int k=0;k<n;k++){
+				sys->clist[counter].x_pos=i;
+				sys->clist[counter].y_pos=j;
+				sys->clist[counter].z_pos=k;
+				counter++;
+			}
+		}
+	}
+}
+
 void allocate_sys_arrays(mdsys_t* const sys) {
 	// allocate coordinates arrays
 	sys->rx = (double*)malloc(sys->natoms * sizeof(double));
