@@ -10,3 +10,7 @@ The commits in the repository correlate to usernames and people as follows:
 - Sera91 - Serafina Di Gioia
 - AlexTru96  - Alexander Trujillo
 
+
+The report, whit the description of the procedure followed for the code optimization, and the results of the bencmark,
+can be found in directory Report.
+
