@@ -117,10 +117,11 @@ int main(int argc, char** argv) {
 	for (sys.nfi = 1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 		/* write output, if requested */
 		if (sys.mpirank == 0) {
-			if ((sys.nfi % nprint) == 0)
+			if ((sys.nfi % nprint) == 0) {
                                 t_pre_output = wallclock();
 				output(&sys, erg, traj);
                                 t_IO += (wallclock() - t_pre_output);
+                        }
 		}
 
 		/* propagate system and recompute energies */
