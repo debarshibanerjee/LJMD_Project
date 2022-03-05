@@ -19,7 +19,8 @@ int main(int argc, char** argv) {
 	char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
 	FILE *fp, *traj, *erg;
 	mdsys_t sys;
-	double t_start;
+	double t_start, t_pre_output;
+        double t_IO=0;
 
 	t_start = wallclock();
 
@@ -51,6 +52,12 @@ int main(int argc, char** argv) {
 	MPI_Bcast(&(sys.box), 1, MPI_DOUBLE, 0, sys.mpicomm);
 	MPI_Bcast(&(sys.rcut), 1, MPI_DOUBLE, 0, sys.mpicomm);
 	MPI_Bcast(&(sys.dt), 1, MPI_DOUBLE, 0, sys.mpicomm);
+
+        if (sys.mpirank == 0) {
+		printf("Communication time: %10.3fs\n", wallclock() - t_start);
+        }
+
+        
 
 	/* allocate memory */
 	allocate_sys_arrays(&sys);
@@ -108,7 +115,9 @@ int main(int argc, char** argv) {
 		/* write output, if requested */
 		if (sys.mpirank == 0) {
 			if ((sys.nfi % nprint) == 0)
+                                t_pre_output = wallclock();
 				output(&sys, erg, traj);
+                                t_IO += (wallclock() - t_pre_output);
 		}
 
 		/* propagate system and recompute energies */
@@ -120,6 +129,7 @@ int main(int argc, char** argv) {
 	/* clean up: close files, free memory */
 	if (sys.mpirank == 0) {
 		printf("Simulation Done. Run time: %10.3fs\n", wallclock() - t_start);
+                printf("I/O time : %10.3fs\n", t_IO);
 		fclose(erg);
 		fclose(traj);
 	}
