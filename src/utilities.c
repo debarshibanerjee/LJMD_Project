@@ -145,4 +145,9 @@ void free_sys_arrays(mdsys_t* const sys) {
 	sys->cx = NULL;
 	sys->cy = NULL;
 	sys->cz = NULL;
+
+	// free cells allocations
+	free(sys->plist);
+	free(sys->clist);
+	free(sys->cell_counter);
 }
