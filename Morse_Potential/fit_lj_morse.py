@@ -31,6 +31,8 @@ print("pcov (fitted) =", pcov)
 morse_vals = morse(r,popt[0])
 
 plt.title("Estimating appropriate Morse parameters from LJ results")
+plt.ylabel('Energy')
+plt.xlabel('Distance')
 plt.ylim(-2*eps, +5*eps)
 plt.plot(r,morse_vals,'b', label='Morse Potential')
 plt.plot(r,lj_y,'g',label='Lennard-Jones Potential')
