@@ -47,6 +47,8 @@ void velverlet(mdsys_t* sys) {
 	/*Force function selected by the macro*/
 #ifdef SIMPLE
 	force_omp_simple(sys);	// simpler OMP+MPI implementation
+#elif MORSE
+	force_morse(sys);
 #else
 	force(sys);	 // better OMP+MPI implementation
 #endif

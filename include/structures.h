@@ -13,6 +13,7 @@ struct _mdsys {
 	double *vx, *vy, *vz;
 	double *fx, *fy, *fz;
 	double *cx, *cy, *cz;
+	double De, a_m, re;
 };
 typedef struct _mdsys mdsys_t;
 

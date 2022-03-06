@@ -8,6 +8,10 @@ if(ENABLE_SIMPLE_FORCE)
 	add_definitions(-DSIMPLE)
 endif()
 
+if(ENABLE_MORSE)
+	add_definitions(-DMORSE)
+endif()
+
 find_package(MPI REQUIRED)
 
 if(ENABLE_OPENMP)
@@ -17,7 +21,7 @@ if(ENABLE_OPENMP)
         set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_library(ljmd_lib ${CMAKE_SOURCE_DIR}/src/utilities.c ${CMAKE_SOURCE_DIR}/src/verlet.c ${CMAKE_SOURCE_DIR}/src/input.c ${CMAKE_SOURCE_DIR}/src/output.c ${CMAKE_SOURCE_DIR}/src/force.c ${CMAKE_SOURCE_DIR}/src/energy.c)
+add_library(ljmd_lib ${CMAKE_SOURCE_DIR}/src/utilities.c ${CMAKE_SOURCE_DIR}/src/verlet.c ${CMAKE_SOURCE_DIR}/src/input.c ${CMAKE_SOURCE_DIR}/src/output.c ${CMAKE_SOURCE_DIR}/src/force.c ${CMAKE_SOURCE_DIR}/src/energy.c ${CMAKE_SOURCE_DIR}/src/force_morse.c)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})

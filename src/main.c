@@ -41,6 +41,13 @@ int main(int argc, char** argv) {
 
 		populate_data(stdin, &line, &restfile, &trajfile, &ergfile, &sys, &nprint);
 		/* read input file */
+
+		// Morse parameters for Argon
+#ifdef MORSE
+		sys.De = sys.epsilon; // well depth
+		sys.re = 1.12246 * sys.sigma; // 2^(1/6) * sigma
+		sys.a_m = 1.05; // guesstimation
+#endif
 	}
 	/*Sending data to all MPI processors*/
 	MPI_Bcast(&(sys.natoms), 1, MPI_INT, 0, sys.mpicomm);
@@ -51,6 +58,11 @@ int main(int argc, char** argv) {
 	MPI_Bcast(&(sys.box), 1, MPI_DOUBLE, 0, sys.mpicomm);
 	MPI_Bcast(&(sys.rcut), 1, MPI_DOUBLE, 0, sys.mpicomm);
 	MPI_Bcast(&(sys.dt), 1, MPI_DOUBLE, 0, sys.mpicomm);
+#ifdef MORSE
+	MPI_Bcast(&(sys.De), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.re), 1, MPI_DOUBLE, 0, sys.mpicomm);
+	MPI_Bcast(&(sys.a_m), 1, MPI_DOUBLE, 0, sys.mpicomm);
+#endif
 
 	/* allocate memory */
 	allocate_sys_arrays(&sys);
@@ -84,6 +96,10 @@ int main(int argc, char** argv) {
 	if (sys.mpirank == 0)
 		printf("Using simpler force function.\n");
 	force_omp_simple(&sys);	 // simpler OMP+MPI implementation
+#elif MORSE
+	if (sys.mpirank == 0)
+		printf("Using Morse Potential Function.\n");
+	force_morse(&sys);
 #else
 	if (sys.mpirank == 0)
 		printf("Using default force function.\n");

@@ -35,6 +35,7 @@ int populate_data(FILE* fp,
 
 extern void force(mdsys_t* sys);
 extern void force_omp_simple(mdsys_t* sys);
+extern void force_morse(mdsys_t* sys);
 extern void ekin(mdsys_t* sys);
 extern void verlet_vel_update(mdsys_t* sys);
 extern void verlet_vel_propagation(mdsys_t* sys);
