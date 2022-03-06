@@ -3,8 +3,8 @@ In this report we describe the steps followed for benchmarking the LJMD code, an
 
 The benchmark process has been divided in 3 tasks:
  - refactoring/single-core optimization (assigned to S. Di Gioia)
- - MPI parallelization (assigned to A. Trujillo )
- - OMP parallelization (assigned to D. Banerjee)
+ - MPI parallelization/cell-list (assigned to A. Trujillo )
+ - OMP parallelization/tests (assigned to D. Banerjee)
 
 
 ## Compilation support for the LJMD code
@@ -18,7 +18,7 @@ This part focuses on the optimization of the serial code.
 
 We have advanced step by step:
 
-Starting from the baseline code provided by A. Kohlmeier, we first improve the performances by exploiting the compiler optimization flags.
+Starting from the baseline code provided by A. Kohlmeier, we first improve the performances by exploiting the compiler optimization flags, moving from -O2 to -O3 and adding the flags: -fomit-frame-pointer -msse3
 
 Then, we have considered different optimizations such as:
   - substituting costly mathematical operations with faster ones (for instance reducing the number of calls to sqrt and division operations as possible)
@@ -28,10 +28,17 @@ Then, we have considered different optimizations such as:
   
 
 
-Then, we have applied our physical knowledge, and we optimize further the force calculation by means of the exploitations of the Newton's third law.
+As last step, we have applied our physical knowledge, and we optimize further the force calculation by means of the exploitations of the Newton's third law.
 
 
-Clearly, we have implemented these improvements having in mind that these shall be mergeable with MPI and OpenMP. 
+Below you can see how the runtime for Argon-108 changes with the step-by-step optimization:
+
+![SCO_scaling.png](../plots/SCO-scaling.png)
+
+
+
+Once we have reached the point where is difficult to improve further our SCO optimization, we considered this done and we moved to MPI and OpenMP parallelization.
+It's important to notice that our efforts have been focused on optimizing the force function and the Verlet functions, more than other utilities functions, since these two functions represent the core of the code.
 
 
 ## MPI benchmark
@@ -53,6 +60,19 @@ This is even more evident in the plot with the average estimated SPEEDUP (S= T(1
 
 
 
-#Hybrid benchmark (with OMP)
+## Hybrid benchmark (with OMP)
+
+The code presents two different OMP implementation of the Force function, one called the 'default' one and one the 'fancy' one.
+
+The default OMP implementation did not seem to have a very good scaling with increasing the number of threads, like shown in the plot below:
+
+![OMP_scaling.png](../plots/OMP_scaling_LJMD.png)
+
+This has motivated us to implement an alternative OMP approach.
+And with this approach we can gain a quite better scaling, but within the 10 % of difference respect to the previous approach.
+
+We think that we need a larger size of the simulation to study properly the effect of the OMP parallelization but this is left for future studies.
+
+
 
 
