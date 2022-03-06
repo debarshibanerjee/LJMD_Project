@@ -3,11 +3,10 @@
 #include <mpi.h>
 
 /* structure to organize atoms in discrete cells */
-struct _cell{
-        int natoms;
-        int x_pos,y_pos,z_pos;
-        int *idxlist;
-
+struct _cell {
+	int natoms;
+	int x_pos, y_pos, z_pos;
+	int* idxlist;
 };
 typedef struct _cell cell_t;
 
@@ -16,9 +15,9 @@ typedef struct _cell cell_t;
 struct _mdsys {
 	MPI_Comm mpicomm;
 	int nsize, mpirank, nthreads;
-	int *plist,*cell_counter;
-        cell_t *clist;
-        int nfi, nsteps, natoms,ncells,ncel_d, npairs;
+	int *plist, *cell_counter;
+	cell_t* clist;
+	int nfi, nsteps, natoms, ncells, ncel_d, npairs;
 	double dt, mass, epsilon, sigma, box, rcut;
 	double ekin, epot, temp;
 	double *rx, *ry, *rz;

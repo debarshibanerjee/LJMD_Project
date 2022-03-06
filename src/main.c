@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 	FILE *fp, *traj, *erg;
 	mdsys_t sys;
 	double t_start, t_pre_output;
-        double t_IO=0;
+	double t_IO = 0;
 
 	t_start = wallclock();
 
@@ -45,9 +45,9 @@ int main(int argc, char** argv) {
 
 		// Morse parameters for Argon
 #ifdef MORSE
-		sys.De = sys.epsilon; // well depth
-		sys.re = 1.12246 * sys.sigma; // 2^(1/6) * sigma
-		sys.a_m = 1.05; // guesstimation
+		sys.De = sys.epsilon;		   // well depth
+		sys.re = 1.12246 * sys.sigma;  // 2^(1/6) * sigma
+		sys.a_m = 1.05;				   // guesstimation
 #endif
 	}
 	/*Sending data to all MPI processors*/
@@ -65,22 +65,22 @@ int main(int argc, char** argv) {
 	MPI_Bcast(&(sys.a_m), 1, MPI_DOUBLE, 0, sys.mpicomm);
 #endif
 
-        if (sys.mpirank == 0) {
+	if (sys.mpirank == 0) {
 		printf("Communication time: %10.3fs\n", wallclock() - t_start);
-        }
+	}
 
-    	int ncell_perdim;
-    	int cells = sys.box/sys.rcut;
-    	ncell_perdim = (cells%2==0)? cells+1:cells;
-    	sys.ncel_d= ncell_perdim;
-    	sys.ncells = ncell_perdim*ncell_perdim*ncell_perdim; 
-        
+	int ncell_perdim;
+	int cells = sys.box / sys.rcut;
+	ncell_perdim = (cells % 2 == 0) ? cells + 1 : cells;
+	sys.ncel_d = ncell_perdim;
+	sys.ncells = ncell_perdim * ncell_perdim * ncell_perdim;
+
 	/* allocate memory */
 	allocate_sys_arrays(&sys);
 
 	/* cell and pair list creation*/
 	cell_localization(&sys);
-    	pairlist_creation(&sys);
+	pairlist_creation(&sys);
 
 	/* read restart */
 	if (sys.mpirank == 0) {
@@ -105,8 +105,8 @@ int main(int argc, char** argv) {
 	/* initialize forces and energies.*/
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
-	
-	ordering_atoms(&sys);  
+
+	ordering_atoms(&sys);
 	/*calling the Force function*/
 #ifdef SIMPLE
 	if (sys.mpirank == 0)
@@ -143,10 +143,10 @@ int main(int argc, char** argv) {
 		/* write output, if requested */
 		if (sys.mpirank == 0) {
 			if ((sys.nfi % nprint) == 0) {
-                                t_pre_output = wallclock();
+				t_pre_output = wallclock();
 				output(&sys, erg, traj);
-                                t_IO += (wallclock() - t_pre_output);
-                        }
+				t_IO += (wallclock() - t_pre_output);
+			}
 		}
 
 		/* propagate system and recompute energies */
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
 	/* clean up: close files, free memory */
 	if (sys.mpirank == 0) {
 		printf("Simulation Done. Run time: %10.3fs\n", wallclock() - t_start);
-                printf("I/O time : %10.3fs\n", t_IO);
+		printf("I/O time : %10.3fs\n", t_IO);
 		fclose(erg);
 		fclose(traj);
 	}
