@@ -106,7 +106,10 @@ int main(int argc, char** argv) {
 	MPI_Barrier(sys.mpicomm);
 	sys.nfi = 0;
 
-	ordering_atoms(&sys);
+	/* Indexing atoms by cell location, only working for serial version */
+	if(sys.mpirank==0)
+	       	ordering_atoms(&sys);
+
 	/*calling the Force function*/
 #ifdef SIMPLE
 	if (sys.mpirank == 0)

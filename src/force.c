@@ -67,7 +67,9 @@ void force(mdsys_t* sys) {
 					rsqinv = 1.0 / rsq;
 					r6 = rsqinv * rsqinv * rsqinv;
 					ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
-#pragma omp atomic
+#ifdef _OPENMP
+					#pragma omp atomic
+#endif
 					epot += (c12 * r6 * r6 - c6 * r6);
 					cx[ii] += rx * ffac;
 					cy[ii] += ry * ffac;
