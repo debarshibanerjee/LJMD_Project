@@ -33,71 +33,76 @@ double pbc(double x, const double boxby2) {
 	return x;
 }
 
-void ordering_atoms(mdsys_t* const sys){
+void ordering_atoms(mdsys_t* const sys) {
 	int counter, cell_index;
-	int cell_x,cell_y,cell_z;
-	double local_posx,local_posy,local_posz;
-	double cell_size= sys->box/sys->ncel_d;
-	int half_box = sys->box*0.5;
-	int n=sys->ncel_d;
+	int cell_x, cell_y, cell_z;
+	double local_posx, local_posy, local_posz;
+	double cell_size = sys->box / sys->ncel_d;
+	int half_box = sys->box * 0.5;
+	int n = sys->ncel_d;
 
-	for(int i=0;i<sys->ncells;i++) sys->cell_counter[i]=0;
+	for (int i = 0; i < sys->ncells; i++)
+		sys->cell_counter[i] = 0;
 
-	for(int at=0;at<sys->natoms;at++){
-	        local_posx= pbc(sys->rx[at],half_box);	
-	        local_posy= pbc(sys->ry[at],half_box);	
-	        local_posz= pbc(sys->rz[at],half_box);	
+	for (int at = 0; at < sys->natoms; at++) {
+		local_posx = pbc(sys->rx[at], half_box);
+		local_posy = pbc(sys->ry[at], half_box);
+		local_posz = pbc(sys->rz[at], half_box);
 
-		cell_x=(local_posx+half_box)/cell_size;
-		cell_y=(local_posy+half_box)/cell_size;
-		cell_z=(local_posz+half_box)/cell_size;
+		cell_x = (local_posx + half_box) / cell_size;
+		cell_y = (local_posy + half_box) / cell_size;
+		cell_z = (local_posz + half_box) / cell_size;
 
-		cell_index= cell_z+n*cell_y+n*n*cell_x;
+		cell_index = cell_z + n * cell_y + n * n * cell_x;
 
-		counter=sys->cell_counter[cell_index];
-		sys->clist[cell_index].idxlist[counter]=at;
-		sys->cell_counter[cell_index]+=1;
+		counter = sys->cell_counter[cell_index];
+		sys->clist[cell_index].idxlist[counter] = at;
+		sys->cell_counter[cell_index] += 1;
 	}
-	for(int i=0;i<sys->ncells;i++) sys->clist[i].natoms=sys->cell_counter[i]-1;
+	for (int i = 0; i < sys->ncells; i++)
+		sys->clist[i].natoms = sys->cell_counter[i] - 1;
 }
 
-void cell_localization(mdsys_t* const sys){
-	int counter=0;
-	int n=sys->ncel_d;
-	for(int i=0;i<n;i++){
-		for(int j=0; j<n;j++){
-			for(int k=0;k<n;k++){
-				sys->clist[counter].x_pos=i;
-				sys->clist[counter].y_pos=j;
-				sys->clist[counter].z_pos=k;
+void cell_localization(mdsys_t* const sys) {
+	int counter = 0;
+	int n = sys->ncel_d;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			for (int k = 0; k < n; k++) {
+				sys->clist[counter].x_pos = i;
+				sys->clist[counter].y_pos = j;
+				sys->clist[counter].z_pos = k;
 				counter++;
 			}
 		}
 	}
 }
 
-void pairlist_creation(mdsys_t* const sys){
-	int counter=0,cell_index;
-	int x_pos,y_pos,z_pos;
-	int near_xpos,near_ypos,near_zpos;
-	int n=sys->ncel_d;
-	int N=sys->ncells;
-	for(int c=0;c<N;c++){
-		x_pos=sys->clist[c].x_pos;
-		y_pos=sys->clist[c].y_pos;
-		z_pos=sys->clist[c].z_pos;
-		for(int i=-1;i<2;i++){
-			for(int j=-1; j<2;j++){
-				for(int k=-1;k<2;k++){
-					near_xpos=x_pos+i;
-					near_ypos=y_pos+j;
-					near_zpos=z_pos+k;
-					cell_index=near_zpos+n*near_ypos+n*n*near_xpos;
-					if(near_xpos>n-1||near_xpos<0) continue;
-					if(near_ypos>n-1||near_ypos<0) continue;
-					if(near_zpos>n-1||near_zpos<0) continue;
-					sys->plist[2*counter]=c;
-					sys->plist[2*counter+1]=cell_index;
+void pairlist_creation(mdsys_t* const sys) {
+	int counter = 0, cell_index;
+	int x_pos, y_pos, z_pos;
+	int near_xpos, near_ypos, near_zpos;
+	int n = sys->ncel_d;
+	int N = sys->ncells;
+	for (int c = 0; c < N; c++) {
+		x_pos = sys->clist[c].x_pos;
+		y_pos = sys->clist[c].y_pos;
+		z_pos = sys->clist[c].z_pos;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				for (int k = -1; k < 2; k++) {
+					near_xpos = x_pos + i;
+					near_ypos = y_pos + j;
+					near_zpos = z_pos + k;
+					cell_index = near_zpos + n * near_ypos + n * n * near_xpos;
+					if (near_xpos > n - 1 || near_xpos < 0)
+						continue;
+					if (near_ypos > n - 1 || near_ypos < 0)
+						continue;
+					if (near_zpos > n - 1 || near_zpos < 0)
+						continue;
+					sys->plist[2 * counter] = c;
+					sys->plist[2 * counter + 1] = cell_index;
 					counter++;
 				}
 			}
@@ -134,11 +139,11 @@ void allocate_sys_arrays(mdsys_t* const sys) {
 	sys->cell_counter = (int*)malloc(sys->ncells * sizeof(int));
 
 	// allocate pair_list
-	sys->plist= (int*)malloc(2*26*(sys->ncells) * sizeof(int));
+	sys->plist = (int*)malloc(2 * 26 * (sys->ncells) * sizeof(int));
 
 	// allocate atom indices
-	for(int i=0;i<sys->ncells;i++)
-		sys->clist[i].idxlist=(int*)malloc(sys->natoms * sizeof(int));
+	for (int i = 0; i < sys->ncells; i++)
+		sys->clist[i].idxlist = (int*)malloc(sys->natoms * sizeof(int));
 }
 
 void free_sys_arrays(mdsys_t* const sys) {

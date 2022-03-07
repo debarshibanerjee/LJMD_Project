@@ -7,8 +7,7 @@ make check
 # diff argon_108.dat ../reference/argon_108.dat
 cd ..
 
-# echo "Running make check in examples dir for MPI..."
+# echo "Running make check for Morse potential..."
 # cd examples/
-# make -f makefile_mpi.mk
-# diff argon_108.dat ../reference/argon_108.dat
+# make -f makefile_morse.mk
 # cd ..

@@ -184,59 +184,56 @@ void force_omp_simple(mdsys_t* sys) {
 	MPI_Reduce(&epot, &(sys->epot), 1, MPI_DOUBLE, MPI_SUM, 0, sys->mpicomm);
 }
 
+void force_cell_list(mdsys_t* sys) {
+	double rsq, ffac = 0.0;
+	double rx, ry, rz;
+	double sigma, sigma6;
+	double c6, c12, rcsq;
 
-void force_cell_list(mdsys_t *sys)
-{
-    double rsq,ffac=0.0;
-    double rx,ry,rz;
-    double sigma, sigma6;
-    double c6, c12, rcsq;
+	sigma = sys->sigma;
+	sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
 
-    sigma = sys->sigma;
-    sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
+	c6 = 4.0 * sys->epsilon * sigma6;
+	c12 = 4.0 * sys->epsilon * sigma6 * sigma6;
+	rcsq = sys->rcut * sys->rcut;
 
-    c6 = 4.0 * sys->epsilon * sigma6;
-    c12 = 4.0 * sys->epsilon * sigma6 * sigma6;
-    rcsq = sys->rcut * sys->rcut;
+	/* zero energy and forces */
+	sys->epot = 0.0;
+	azzero(sys->fx, sys->natoms);
+	azzero(sys->fy, sys->natoms);
+	azzero(sys->fz, sys->natoms);
 
-    /* zero energy and forces */
-    sys->epot=0.0;
-    azzero(sys->fx,sys->natoms);
-    azzero(sys->fy,sys->natoms);
-    azzero(sys->fz,sys->natoms);
+	for (int i = 0; i < sys->npairs; ++i) {
+		cell_t *c1, *c2;
+		c1 = sys->clist + sys->plist[2 * i];
+		c2 = sys->clist + sys->plist[2 * i + 1];
+		for (int j = 0; j < c1->natoms; ++j) {
+			int ii = c1->idxlist[j];
+			double rx1 = sys->rx[ii];
+			double ry1 = sys->ry[ii];
+			double rz1 = sys->rz[ii];
+			for (int k = 0; k < c2->natoms; ++k) {
+				int jj = c2->idxlist[k];
+				if (ii == jj)
+					continue;
+				rx = pbc(rx1 - sys->rx[jj], 0.5 * sys->box);
+				ry = pbc(ry1 - sys->ry[jj], 0.5 * sys->box);
+				rz = pbc(rz1 - sys->rz[jj], 0.5 * sys->box);
 
-for(int i=0; i < sys->npairs; ++i) {
-	cell_t *c1, *c2;
-	c1=sys->clist + sys->plist[2*i];
-	c2=sys->clist + sys->plist[2*i+1];
-	for (int j=0; j < c1->natoms; ++j) {
-		int ii=c1->idxlist[j];
-		double rx1=sys->rx[ii];
-		double ry1=sys->ry[ii];
-		double rz1=sys->rz[ii];
-		for(int k=0; k < c2->natoms; ++k) {
-			int jj=c2->idxlist[k];
-			if(ii==jj) continue;
-			rx=pbc(rx1 - sys->rx[jj], 0.5*sys->box);
-			ry=pbc(ry1 - sys->ry[jj], 0.5*sys->box);
-			rz=pbc(rz1 - sys->rz[jj], 0.5*sys->box);
-				
-		        rsq = rx*rx + ry*ry + rz*rz;
-				
-            		/* compute force and energy if within cutoff */
-			if (rsq < rcsq) {
-				double r6, rsqinv;
-				rsqinv = 1.0 / rsq;
-				r6 = rsqinv * rsqinv * rsqinv;
-				ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
-				sys->epot += (c12 * r6 * r6 - c6 * r6);
-				sys->fx[ii] += rx * ffac;
-				sys->fy[ii] += ry * ffac;
-				sys->fz[ii] += rz * ffac;
+				rsq = rx * rx + ry * ry + rz * rz;
+
+				/* compute force and energy if within cutoff */
+				if (rsq < rcsq) {
+					double r6, rsqinv;
+					rsqinv = 1.0 / rsq;
+					r6 = rsqinv * rsqinv * rsqinv;
+					ffac = 12.0 * c12 * r6 * r6 * rsqinv - 6.0 * c6 * r6 * rsqinv;
+					sys->epot += (c12 * r6 * r6 - c6 * r6);
+					sys->fx[ii] += rx * ffac;
+					sys->fy[ii] += ry * ffac;
+					sys->fz[ii] += rz * ffac;
+				}
 			}
-        	}
-    	}
-
-}
-
+		}
+	}
 }
